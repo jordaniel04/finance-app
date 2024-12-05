@@ -1,10 +1,11 @@
 .register-container {
     max-width: 400px;
-    margin: auto;
+    margin: 100px auto;
     padding: 1rem;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: center;
 }
 
 h2 {
@@ -15,6 +16,7 @@ h2 {
 form {
     display: flex;
     flex-direction: column;
+    align-items: center;
 }
 
 label {
@@ -26,6 +28,8 @@ input {
     margin-bottom: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 button {
@@ -39,4 +43,34 @@ button {
 
 button:hover {
     background-color: #155a9c;
+}
+
+.password-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.password-container input {
+    flex: 1;
+    padding-right: 30px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.password-container button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0;
+}
+
+.password-container img {
+    width: 20px;
+    height: 20px;
 }

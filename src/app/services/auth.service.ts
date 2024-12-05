@@ -6,7 +6,7 @@ import { from } from 'rxjs';
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private auth: Auth) {}
+  constructor(private readonly auth: Auth) {}
 
   login(email: string, password: string) {
     return from(signInWithEmailAndPassword(this.auth, email, password));
