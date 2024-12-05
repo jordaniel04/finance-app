@@ -1,0 +1,47 @@
+<div class="dashboard-container">
+    <header class="dashboard-header">
+        <h1>Transacciones</h1>
+        <div class="date-selector">
+            <select (change)="onDateChange($event)">
+                <option value="12-2024">Dic. 2024</option>
+                <option value="11-2024">Nov. 2024</option>
+                <!-- Agregar más opciones según necesidad -->
+            </select>
+            <button class="settings-button">
+                <img src="assets/icons/settings.png" alt="Settings">
+            </button>
+        </div>
+    </header>
+
+    <div class="balance-card">
+        <div class="total-balance">
+            <h2>Saldo total</h2>
+            <p class="amount">${{ totalBalance.toFixed(2) }}</p>
+        </div>
+
+        <div class="transactions-summary">
+            <div class="summary-item income">
+                <span class="icon">↑</span>
+                <span class="label">Ingresos</span>
+                <span class="amount">${{ income.toFixed(2) }}</span>
+            </div>
+
+            <div class="summary-item expenses">
+                <span class="icon">↓</span>
+                <span class="label">Gastos</span>
+                <span class="amount">${{ expenses.toFixed(2) }}</span>
+            </div>
+
+            <div class="summary-item balance">
+                <span class="icon">⚖</span>
+                <span class="label">Balance</span>
+                <span class="amount">${{ balance.toFixed(2) }}</span>
+            </div>
+        </div>
+
+        <button class="manage-accounts">
+            <span class="icon"></span>
+            Gestionar cuentas
+        </button>
+    </div>
+</div>

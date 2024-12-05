@@ -37,15 +37,24 @@ export class RegisterComponent {
     if (this.registerForm.valid) {
       const { email, password } = this.registerForm.value;
       this.authService.register(email, password).subscribe({
-        next: (user) => console.log('Registro exitoso', user),
-        error: (err) => console.error('Error en registro', err)
+        next: () => {
+          console.log('Registro exitoso');
+          // El redireccionamiento lo maneja el servicio
+        },
+        error: (err) => {
+          console.error('Error en registro', err);
+          this.errorMessage = 'Error al registrarse';
+        }
       });
     }
   }
 
   onGoogleRegister() {
     this.authService.loginWithGoogle().subscribe({
-      next: (user) => console.log('Registro con Google exitoso', user),
+      next: () => {
+        console.log('Registro con Google exitoso');
+        // El redireccionamiento lo maneja el servicio
+      },
       error: (err) => {
         console.error('Error en registro con Google', err);
         this.errorMessage = 'Error al registrarse con Google';
