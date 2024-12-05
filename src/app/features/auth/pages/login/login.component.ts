@@ -9,6 +9,7 @@ import { AuthService } from '../../../../services/auth.service';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  errorMessage: string = '';
 
   constructor(
     private readonly fb: FormBuilder, 
@@ -24,8 +25,24 @@ export class LoginComponent {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
       this.authService.login(email, password).subscribe({
-        next: (user) => console.log('Login exitoso', user),
-        error: (err) => console.error('Error en login', err)
+        next: (user) => {
+          console.log('Login exitoso', user);
+          this.errorMessage = '';
+        },
+        error: (error) => {
+          console.error('Error en login', error);
+          console.log(error.code);
+          switch(error.code) {
+            case 'auth/invalid-login-credentials':
+              this.errorMessage = 'Correo o contraseña incorrectos';
+              break;
+            case 'auth/wrong-password':
+              this.errorMessage = 'Contraseña incorrecta';
+              break;
+            default:
+              this.errorMessage = 'Error al iniciar sesión';
+          }
+        }
       });
     }
   }

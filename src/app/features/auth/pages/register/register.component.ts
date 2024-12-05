@@ -12,6 +12,7 @@ export class RegisterComponent {
   registerForm: FormGroup;
   showPassword = false;
   showConfirmPassword = false;
+  errorMessage: string = '';
 
   constructor(
     private readonly fb: FormBuilder,
@@ -40,5 +41,15 @@ export class RegisterComponent {
         error: (err) => console.error('Error en registro', err)
       });
     }
+  }
+
+  onGoogleRegister() {
+    this.authService.loginWithGoogle().subscribe({
+      next: (user) => console.log('Registro con Google exitoso', user),
+      error: (err) => {
+        console.error('Error en registro con Google', err);
+        this.errorMessage = 'Error al registrarse con Google';
+      }
+    });
   }
 }
