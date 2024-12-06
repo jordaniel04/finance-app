@@ -18,11 +18,21 @@
                     <mat-icon>receipt_long</mat-icon>
                     <span>Transacciones</span>
                 </button>
+                <button mat-menu-item (click)="openReports()">
+                    <mat-icon>bar_chart</mat-icon>
+                    <span>Reportes</span>
+                </button>
             </mat-menu>
         </div>
     </header>
 
     <div class="action-buttons-grid grid grid-cols-2 md:grid-cols-4 gap-4 p-4">
+        <button mat-raised-button class="action-button transactions" (click)="openTransactions()">
+            <div class="button-content">
+                <mat-icon class="large-icon">receipt_long</mat-icon>
+                <span>TRANSACCIONES</span>
+            </div>
+        </button>
         <button mat-raised-button class="action-button categories" (click)="openCategories()">
             <div class="button-content">
                 <mat-icon class="large-icon">category</mat-icon>
@@ -35,10 +45,10 @@
                 <span>CUENTAS</span>
             </div>
         </button>
-        <button mat-raised-button class="action-button transactions" (click)="openTransactions()">
+        <button mat-raised-button class="action-button reports" (click)="openReports()">
             <div class="button-content">
-                <mat-icon class="large-icon">receipt_long</mat-icon>
-                <span>TRANSACCIONES</span>
+                <mat-icon class="large-icon">bar_chart</mat-icon>
+                <span>REPORTES</span>
             </div>
         </button>
     </div>

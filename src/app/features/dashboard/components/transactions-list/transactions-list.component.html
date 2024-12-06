@@ -1,0 +1,58 @@
+<div class="transactions-container">
+    <header class="transactions-header">
+        <button mat-icon-button (click)="close()">
+            <mat-icon>arrow_back</mat-icon>
+        </button>
+        <h2>Transacciones</h2>
+    </header>
+
+    <div class="transactions-list">
+        <mat-accordion>
+            <mat-expansion-panel *ngFor="let group of transactionGroups">
+                <mat-expansion-panel-header>
+                    <mat-panel-title>
+                        {{group.date | date:'EEEE, d MMMM yyyy':'':'es'}}
+                    </mat-panel-title>
+                    <mat-panel-description class="amounts-summary">
+                        <span class="income">+{{group.totalIncome | currency:'PEN':'symbol-narrow':'1.2-2'}}</span>
+                        <span class="expense">-{{group.totalExpense | currency:'PEN':'symbol-narrow':'1.2-2'}}</span>
+                    </mat-panel-description>
+                </mat-expansion-panel-header>
+
+                <div class="transaction-details">
+                    <div *ngFor="let transaction of group.transactions" class="transaction-item">
+                        <div class="transaction-icon" [style.background-color]="transaction.color">
+                            <mat-icon>{{transaction.icon}}</mat-icon>
+                        </div>
+                        <div class="transaction-info">
+                            <span class="category">{{transaction.category}}</span>
+                            <span class="description">{{transaction.description}}</span>
+                        </div>
+                        <span class="amount" [class.income]="transaction.type === 'income'"
+                            [class.expense]="transaction.type === 'expense'">
+                            {{transaction.amount | currency}}
+                        </span>
+                    </div>
+                </div>
+            </mat-expansion-panel>
+        </mat-accordion>
+    </div>
+
+    <div class="monthly-summary">
+        <div class="summary-item">
+            <span class="label">Ingresos</span>
+            <span class="amount income">+{{monthlyTotals.income | currency:'PEN':'symbol-narrow':'1.2-2'}}</span>
+        </div>
+        <div class="summary-item">
+            <span class="label">Egresos</span>
+            <span class="amount expense">-{{monthlyTotals.expense | currency:'PEN':'symbol-narrow':'1.2-2'}}</span>
+        </div>
+        <div class="summary-item balance">
+            <span class="label">Saldo</span>
+            <span class="amount" [class.income]="monthlyTotals.balance >= 0" 
+                                [class.expense]="monthlyTotals.balance < 0">
+                {{monthlyTotals.balance | currency:'PEN':'symbol-narrow':'1.2-2'}}
+            </span>
+        </div>
+    </div>
+</div>

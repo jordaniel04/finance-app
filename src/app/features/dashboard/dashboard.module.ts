@@ -18,6 +18,8 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CategoriesListComponent } from './components/categories-list/categories-list.component';
+import { TransactionsListComponent } from './components/transactions-list/transactions-list.component';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 const MY_FORMATS = {
   parse: {
@@ -39,7 +41,8 @@ const routes: Routes = [
   declarations: [
     DashboardComponent,
     AddTransactionDialogComponent,
-    CategoriesListComponent
+    CategoriesListComponent,
+    TransactionsListComponent
   ],
   imports: [
     CommonModule,
@@ -55,7 +58,8 @@ const routes: Routes = [
     MatSelectModule,
     MatMenuModule,
     MatCardModule,
-    MatProgressBarModule
+    MatProgressBarModule,
+    MatExpansionModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },

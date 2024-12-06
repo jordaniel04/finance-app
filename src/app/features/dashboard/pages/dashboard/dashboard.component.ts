@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTransactionDialogComponent } from '../../components/add-transaction-dialog/add-transaction-dialog.component';
 import { CategoriesListComponent } from '../../components/categories-list/categories-list.component';
+import { TransactionsListComponent } from '../../components/transactions-list/transactions-list.component';
 
 @Component({
   selector: 'app-dashboard',
@@ -62,7 +63,17 @@ export class DashboardComponent implements OnInit {
   }
 
   openTransactions() {
-    // Implementar vista de transacciones
+    const dialogRef = this.dialog.open(TransactionsListComponent, {
+      width: '100%',
+      height: '100%',
+      maxWidth: '100%',
+      maxHeight: '100%',
+      panelClass: 'full-screen-dialog'
+    });
+  }
+
+  openReports() {
+    // Implementar diálogo de reportes
   }
 
   addAccount() {
