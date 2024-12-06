@@ -17,6 +17,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { CategoriesListComponent } from './components/categories-list/categories-list.component';
 
 const MY_FORMATS = {
   parse: {
@@ -37,7 +38,8 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     DashboardComponent,
-    AddTransactionDialogComponent
+    AddTransactionDialogComponent,
+    CategoriesListComponent
   ],
   imports: [
     CommonModule,
