@@ -1,32 +1,96 @@
 .dialog-container {
-    padding: 24px;
+    padding: 20px;
     background-color: #202124;
     color: white;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+}
+
+::ng-deep .mat-datepicker-content {
+    display: block;
+    border-radius: 4px;
+    background-color: #303134;
+    color: white !important;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+                0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+                0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+    overflow: visible;
+    max-width: 320px !important;
+}
+
+::ng-deep .mat-calendar {
+    background-color: #303134;
+    color: white !important;
+    width: 296px !important;
+}
+
+::ng-deep .mat-calendar-body-cell-content {
+    color: white !important;
+}
+
+::ng-deep .mat-calendar-body-label,
+::ng-deep .mat-calendar-period-button,
+::ng-deep .mat-calendar-table-header {
+    color: white !important;
+}
+
+::ng-deep .mat-datepicker-toggle {
+    color: #000 !important;
+}
+
+::ng-deep .mat-calendar-arrow {
+    border-top-color: #000 !important;
+}
+
+::ng-deep .mat-datepicker-content .mat-calendar {
+    width: 296px !important;
+    height: 354px !important;
+}
+
+::ng-deep .mat-datepicker-popup {
+    position: relative !important;
+    width: auto !important;
+}
+
+::ng-deep .cdk-overlay-pane {
+    overflow: visible !important;
+    max-width: 320px !important;
 }
 
 h2 {
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     color: white;
+    font-size: 18px;
 }
 
 .form-group {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 mat-form-field {
     width: 100%;
+    font-size: 14px;
+}
+
+::ng-deep .mat-form-field-wrapper {
+    margin-bottom: -1.25em;
 }
 
 .dialog-actions {
     display: flex;
     justify-content: flex-end;
     gap: 8px;
-    margin-top: 24px;
+    margin-top: 16px;
+    padding-top: 8px;
+    background-color: #202124;
+    position: sticky;
+    bottom: 0;
 }
 
 mat-button-toggle-group {
     width: 100%;
-    margin-bottom: 16px;
+    margin-bottom: 12px;
 }
 
 mat-button-toggle {
@@ -35,4 +99,39 @@ mat-button-toggle {
 
 ::ng-deep .mat-button-toggle-checked {
     background-color: #1a73e8;
+}
+
+::ng-deep .mat-datepicker-content::-webkit-scrollbar {
+    display: none;
+}
+
+::ng-deep .mat-datepicker-content {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+/* Estilo para la barra de desplazamiento */
+.dialog-container::-webkit-scrollbar {
+    width: 6px;
+}
+
+.dialog-container::-webkit-scrollbar-track {
+    background: #202124;
+}
+
+.dialog-container::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 3px;
+}
+
+.dialog-container::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+::ng-deep .mat-form-field-infix {
+    padding: 0.5em 0 !important;
+}
+
+::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
+    padding: 0.5em 0.75em 0 0.75em !important;
 }
