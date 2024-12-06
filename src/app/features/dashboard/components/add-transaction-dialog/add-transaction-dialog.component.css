@@ -82,10 +82,47 @@ mat-form-field {
     justify-content: flex-end;
     gap: 8px;
     margin-top: 16px;
-    padding-top: 8px;
+    padding: 16px 0 0;
     background-color: #202124;
     position: sticky;
     bottom: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+/* Estilos para el botón Cancelar */
+::ng-deep .dialog-actions .mat-button {
+    color: white !important;
+    background-color: #1a73e8;
+    padding: 0 16px;
+    transition: background-color 0.3s ease;
+}
+
+::ng-deep .dialog-actions .mat-button:hover {
+    background-color: #1557b0;
+}
+
+::ng-deep .dialog-actions .mat-button:active {
+    background-color: #104d9e;
+}
+
+/* Estilos para el botón Guardar */
+::ng-deep .dialog-actions .mat-raised-button.mat-primary {
+    background-color: #1a73e8;
+    color: white !important;
+    transition: background-color 0.3s ease;
+}
+
+::ng-deep .dialog-actions .mat-raised-button.mat-primary:hover {
+    background-color: #1557b0;
+}
+
+::ng-deep .dialog-actions .mat-raised-button.mat-primary:active {
+    background-color: #104d9e;
+}
+
+::ng-deep .dialog-actions .mat-raised-button.mat-primary:disabled {
+    background-color: rgba(26, 115, 232, 0.5);
+    color: rgba(255, 255, 255, 0.5) !important;
 }
 
 mat-button-toggle-group {
