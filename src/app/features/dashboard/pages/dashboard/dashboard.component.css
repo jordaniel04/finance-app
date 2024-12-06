@@ -1,212 +1,143 @@
 .dashboard-container {
-    padding: 16px;
-    background-color: #1a1a1a;
-    min-height: 100vh;
-    color: white;
-    position: relative;
+    height: 100vh;
+    background-color: #f5f5f5;
+    display: flex;
+    flex-direction: column;
 }
 
 .dashboard-header {
+    background-color: #ffffff;
+    padding: 16px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.user-section {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
 }
 
-.date-selector {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-}
-
-.date-selector select {
-    padding: 8px 16px;
-    border-radius: 20px;
-    background-color: #333;
-    color: white;
-    border: none;
-}
-.balance-card {
-    background-color: #252525;
-    border-radius: 16px;
-    padding: 24px;
-    margin-bottom: 24px;
-}
-
-.total-balance {
-    margin-bottom: 24px;
-}
-
-.total-balance h2 {
-    color: #888;
-    font-size: 16px;
-    margin-bottom: 8px;
-}
-
-.total-balance .amount {
-    font-size: 32px;
-    font-weight: bold;
-}
-
-.transactions-summary {
-    background-color: #1a1a1a;
-    border-radius: 12px;
+.accounts-section {
     padding: 16px;
-    margin-bottom: 16px;
 }
 
-.summary-item {
+.accounts-list {
     display: flex;
-    align-items: center;
-    margin-bottom: 16px;
+    overflow-x: auto;
+    gap: 12px;
+    padding: 8px 0;
 }
 
-.summary-item:last-child {
-    margin-bottom: 0;
+.accounts-list mat-card {
+    min-width: 150px;
+    padding: 16px;
+    border-radius: 12px;
 }
 
-.summary-item .icon {
-    margin-right: 12px;
+.account-name {
+    font-size: 14px;
+    color: rgba(0,0,0,0.87);
+    display: block;
 }
 
-.summary-item .label {
+.account-balance {
+    font-size: 18px;
+    font-weight: 500;
+    display: block;
+    margin-top: 8px;
+}
+
+.expenses-section {
     flex: 1;
+    padding: 16px;
 }
 
-.income .amount {
-    color: #4CAF50;
+.chart-container {
+    height: 300px;
+    margin-top: 16px;
 }
 
-.expenses .amount {
-    color: #F44336;
-}
-
-.manage-accounts {
-    width: 100%;
-    padding: 12px;
-    background-color: #333;
-    border: none;
-    border-radius: 8px;
-    color: white;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    cursor: pointer;
-}
-
-::ng-deep .mat-form-field {
-    width: 150px;
-}
-
-::ng-deep .mat-datepicker-popup {
-    background-color: #303134;
-    color: white !important;
-    position: fixed !important;
-    top: 50% !important;
-    left: 50% !important;
-    transform: translate(-50%, -50%) !important;
-    max-height: 80vh !important;
-    overflow-y: auto !important;
-}
-
-::ng-deep .mat-calendar {
-    background-color: #303134;
-    color: white !important;
-    width: 280px !important;
-    height: auto !important;
-}
-
-::ng-deep .mat-calendar-body-cell-content {
-    color: white !important;
-}
-
-::ng-deep .mat-calendar-body-selected {
-    background-color: #1a73e8 !important;
-    color: white !important;
-}
-
-::ng-deep .mat-calendar-body-today:not(.mat-calendar-body-selected) {
-    border-color: #1a73e8 !important;
-}
-
-::ng-deep .mat-calendar-arrow {
-    border-top-color: white !important;
-}
-
-::ng-deep .mat-calendar-table-header,
-::ng-deep .mat-calendar-body-label {
-    color: white !important;
-}
-
-::ng-deep .mat-datepicker-content {
-    background-color: #303134 !important;
-    color: white !important;
-    box-shadow: 0 2px 4px -1px rgba(0,0,0,.2), 
-                0 4px 5px 0 rgba(0,0,0,.14), 
-                0 1px 10px 0 rgba(0,0,0,.12) !important;
-}
-
-::ng-deep .mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover > .mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
-    background-color: rgba(255,255,255,.04) !important;
-}
-
-.month-picker .mat-calendar-period-button {
-    pointer-events: none;
-}
-
-.month-picker .mat-calendar-arrow {
-    display: none;
-}
-
-.settings-button {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    padding: 8px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    transition: background-color 0.3s;
-}
-
-.settings-button:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-.settings-button mat-icon {
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
-}
-
-.fab-button {
+.add-transaction-fab {
     position: fixed;
-    bottom: 80px;
-    right: 16px;
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
+    bottom: 24px;
+    right: 24px;
     background-color: #1a73e8;
-    border: none;
     color: white;
+}
+
+.action-buttons-grid {
+    display: grid;
+    gap: 1rem;
+    padding: 1rem;
+}
+
+.action-button {
+    height: 140px !important;
+    border-radius: 16px !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    overflow: hidden;
+}
+
+@media (min-width: 640px) {
+    .action-button {
+        height: 160px !important;
+    }
+}
+
+@media (min-width: 1024px) {
+    .action-button {
+        height: 180px !important;
+    }
+}
+
+.button-content {
     display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s, transform 0.3s;
+    height: 100%;
 }
 
-.fab-button:hover {
-    background-color: #1557b0;
-    transform: scale(1.05);
+.large-icon {
+    font-size: 36px !important;
+    height: 36px !important;
+    width: 36px !important;
+    margin-bottom: 0.75rem;
 }
 
-.fab-button mat-icon {
-    font-size: 24px;
-    width: 24px;
-    height: 24px;
+@media (min-width: 640px) {
+    .large-icon {
+        font-size: 48px !important;
+        height: 48px !important;
+        width: 48px !important;
+        margin-bottom: 1rem;
+    }
+}
+
+.action-button span {
+    font-size: 1rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+@media (min-width: 640px) {
+    .action-button span {
+        font-size: 1.25rem;
+    }
+}
+
+.categories {
+    background-color: #FF9800 !important;
+    color: white !important;
+}
+
+.accounts {
+    background-color: #2196F3 !important;
+    color: white !important;
+}
+
+.transactions {
+    background-color: #4CAF50 !important;
+    color: white !important;
 }

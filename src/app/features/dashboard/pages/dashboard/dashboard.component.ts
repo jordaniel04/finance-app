@@ -8,51 +8,30 @@ import { AddTransactionDialogComponent } from '../../components/add-transaction-
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
-  months = [
-    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  accounts = [
+    { name: 'Efectivo', balance: 750, type: 'cash' },
+    { name: 'Banco', balance: 3469.50, type: 'bank' },
+    { name: 'Ahorros', balance: 6220, type: 'savings' }
   ];
-  years: number[] = [];
-  currentMonth: number;
-  currentYear: number;
-  totalBalance: number = 0;
-  income: number = 0;
-  expenses: number = 0;
-  balance: number = 0;
 
-  constructor(private dialog: MatDialog) {
-    const now = new Date();
-    this.currentMonth = now.getMonth();
-    this.currentYear = now.getFullYear();
-    
-    // Generar años desde 2020 hasta el año actual + 5
-    for (let year = 2020; year <= this.currentYear + 5; year++) {
-      this.years.push(year);
-    }
+  expensesData = [
+    { name: 'Alimentación', value: 300 },
+    { name: 'Transporte', value: 150 },
+    { name: 'Entretenimiento', value: 200 },
+    { name: 'Servicios', value: 372.90 }
+  ];
+
+  constructor(private dialog: MatDialog) {}
+
+  get totalExpenses(): number {
+    return this.expensesData.reduce((acc, curr) => acc + curr.value, 0);
   }
 
-  ngOnInit() {
-    // Aquí puedes cargar los datos iniciales
-    this.balance = 1000;
-    this.income = 500;
-    this.expenses = 300;
-    this.totalBalance = this.income - this.expenses;
+  getExpensePercentage(value: number): number {
+    return (value / this.totalExpenses) * 100;
   }
 
-  onMonthChange(event: any) {
-    this.currentMonth = parseInt(event.target.value);
-    this.loadData();
-  }
-
-  onYearChange(event: any) {
-    this.currentYear = parseInt(event.target.value);
-    this.loadData();
-  }
-
-  private loadData() {
-    // Aquí implementarás la lógica para cargar los datos según el mes y año seleccionados
-    console.log(`Cargando datos para ${this.months[this.currentMonth]} ${this.currentYear}`);
-  }
+  ngOnInit() {}
 
   openAddTransactionDialog() {
     const dialogRef = this.dialog.open(AddTransactionDialogComponent, {
@@ -63,8 +42,23 @@ export class DashboardComponent implements OnInit {
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
         console.log('Transaction added:', result);
-        // Aquí implementaremos la lógica para guardar la transacción
       }
     });
+  }
+
+  openCategories() {
+    // Implementar diálogo de categorías
+  }
+
+  openAccounts() {
+    // Implementar diálogo de cuentas
+  }
+
+  openTransactions() {
+    // Implementar vista de transacciones
+  }
+
+  addAccount() {
+    // Implementar diálogo para agregar cuenta
   }
 }

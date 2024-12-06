@@ -1,57 +1,65 @@
 <div class="dashboard-container">
     <header class="dashboard-header">
-        <h1>Balance Actual</h1>
-        <div class="date-selector">
-            <select (change)="onMonthChange($event)">
-                <option *ngFor="let month of months; let i = index" 
-                        [value]="i"
-                        [selected]="i === currentMonth">
-                    {{month}}
-                </option>
-            </select>
-            <select (change)="onYearChange($event)">
-                <option *ngFor="let year of years" 
-                        [value]="year"
-                        [selected]="year === currentYear">
-                    {{year}}
-                </option>
-            </select>
-            <button class="settings-button" aria-label="Settings">
-                <mat-icon>settings</mat-icon>
+        <div class="user-section">
+            <h1>Mi Billetera</h1>
+            <button mat-icon-button [matMenuTriggerFor]="menu">
+                <mat-icon>more_vert</mat-icon>
             </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="openCategories()">
+                    <mat-icon>category</mat-icon>
+                    <span>Categorías</span>
+                </button>
+                <button mat-menu-item (click)="openAccounts()">
+                    <mat-icon>account_balance</mat-icon>
+                    <span>Cuentas</span>
+                </button>
+                <button mat-menu-item (click)="openTransactions()">
+                    <mat-icon>receipt_long</mat-icon>
+                    <span>Transacciones</span>
+                </button>
+            </mat-menu>
         </div>
     </header>
 
-    <div class="dashboard-content">
-        <div class="balance-card">
-            <div class="total-balance">
-                <h2>Saldo total</h2>
-                <p class="amount">S/.{{ totalBalance.toFixed(2) }}</p>
+    <div class="action-buttons-grid grid grid-cols-2 gap-4 p-4">
+        <button mat-raised-button class="action-button categories" (click)="openCategories()">
+            <div class="button-content">
+                <mat-icon class="large-icon">category</mat-icon>
+                <span>CATEGORÍAS</span>
             </div>
-
-            <div class="transactions-summary">
-                <div class="summary-item income">
-                    <mat-icon>arrow_upward</mat-icon>
-                    <span class="label">Ingresos</span>
-                    <span class="amount">S/.{{ income.toFixed(2) }}</span>
-                </div>
-
-                <div class="summary-item expenses">
-                    <mat-icon>arrow_downward</mat-icon>
-                    <span class="label">Gastos</span>
-                    <span class="amount">S/.{{ expenses.toFixed(2) }}</span>
-                </div>
-
-                <div class="summary-item balance">
-                    <mat-icon>balance</mat-icon>
-                    <span class="label">Balance</span>
-                    <span class="amount">S/.{{ balance.toFixed(2) }}</span>
-                </div>
-            </div>
-        </div>
-
-        <button mat-fab class="fab-button" (click)="openAddTransactionDialog()">
-            <mat-icon>add</mat-icon>
         </button>
+        <button mat-raised-button class="action-button accounts" (click)="openAccounts()">
+            <div class="button-content">
+                <mat-icon class="large-icon">account_balance</mat-icon>
+                <span>CUENTAS</span>
+            </div>
+        </button>
+        <button mat-raised-button class="action-button transactions" (click)="openTransactions()">
+            <div class="button-content">
+                <mat-icon class="large-icon">receipt_long</mat-icon>
+                <span>TRANSACCIONES</span>
+            </div>
+        </button>
+    </div>
+
+    <div class="expenses-section">
+        <h2>Gastos últimos 30 días</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mt-4">
+            <mat-card *ngFor="let expense of expensesData" class="p-4">
+                <div class="flex justify-between items-center mb-2">
+                    <span class="text-lg font-medium">{{expense.name}}</span>
+                    <span class="text-lg">{{expense.value | currency}}</span>
+                </div>
+                <mat-progress-bar
+                    mode="determinate"
+                    [value]="getExpensePercentage(expense.value)"
+                    class="h-2 rounded-full"
+                ></mat-progress-bar>
+                <div class="text-right text-sm text-gray-600 mt-1">
+                    {{getExpensePercentage(expense.value) | number:'1.0-0'}}%
+                </div>
+            </mat-card>
+        </div>
     </div>
 </div>
