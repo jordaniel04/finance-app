@@ -1,47 +1,57 @@
 <div class="dashboard-container">
     <header class="dashboard-header">
-        <h1>Transacciones</h1>
+        <h1>Balance Actual</h1>
         <div class="date-selector">
-            <select (change)="onDateChange($event)">
-                <option value="12-2024">Dic. 2024</option>
-                <option value="11-2024">Nov. 2024</option>
-                <!-- Agregar más opciones según necesidad -->
+            <select (change)="onMonthChange($event)">
+                <option *ngFor="let month of months; let i = index" 
+                        [value]="i"
+                        [selected]="i === currentMonth">
+                    {{month}}
+                </option>
             </select>
-            <button class="settings-button">
-                <img src="assets/icons/settings.png" alt="Settings">
+            <select (change)="onYearChange($event)">
+                <option *ngFor="let year of years" 
+                        [value]="year"
+                        [selected]="year === currentYear">
+                    {{year}}
+                </option>
+            </select>
+            <button class="settings-button" aria-label="Settings">
+                <mat-icon>settings</mat-icon>
             </button>
         </div>
     </header>
 
-    <div class="balance-card">
-        <div class="total-balance">
-            <h2>Saldo total</h2>
-            <p class="amount">${{ totalBalance.toFixed(2) }}</p>
+    <div class="dashboard-content">
+        <div class="balance-card">
+            <div class="total-balance">
+                <h2>Saldo total</h2>
+                <p class="amount">S/.{{ totalBalance.toFixed(2) }}</p>
+            </div>
+
+            <div class="transactions-summary">
+                <div class="summary-item income">
+                    <mat-icon>arrow_upward</mat-icon>
+                    <span class="label">Ingresos</span>
+                    <span class="amount">S/.{{ income.toFixed(2) }}</span>
+                </div>
+
+                <div class="summary-item expenses">
+                    <mat-icon>arrow_downward</mat-icon>
+                    <span class="label">Gastos</span>
+                    <span class="amount">S/.{{ expenses.toFixed(2) }}</span>
+                </div>
+
+                <div class="summary-item balance">
+                    <mat-icon>balance</mat-icon>
+                    <span class="label">Balance</span>
+                    <span class="amount">S/.{{ balance.toFixed(2) }}</span>
+                </div>
+            </div>
         </div>
 
-        <div class="transactions-summary">
-            <div class="summary-item income">
-                <span class="icon">↑</span>
-                <span class="label">Ingresos</span>
-                <span class="amount">${{ income.toFixed(2) }}</span>
-            </div>
-
-            <div class="summary-item expenses">
-                <span class="icon">↓</span>
-                <span class="label">Gastos</span>
-                <span class="amount">${{ expenses.toFixed(2) }}</span>
-            </div>
-
-            <div class="summary-item balance">
-                <span class="icon">⚖</span>
-                <span class="label">Balance</span>
-                <span class="amount">${{ balance.toFixed(2) }}</span>
-            </div>
-        </div>
-
-        <button class="manage-accounts">
-            <span class="icon"></span>
-            Gestionar cuentas
+        <button mat-fab class="fab-button" (click)="openAddTransactionDialog()">
+            <mat-icon>add</mat-icon>
         </button>
     </div>
 </div>

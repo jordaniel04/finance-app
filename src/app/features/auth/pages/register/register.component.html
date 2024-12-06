@@ -19,7 +19,7 @@
                     <input id="password" formControlName="password" [type]="showPassword ? 'text' : 'password'" required
                         [class.invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
                     <button type="button" (click)="togglePasswordVisibility('password')" class="toggle-password">
-                        <img src="../../../../../assets/icons/eye-icon.png" alt="Toggle Password Visibility">
+                        <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
                 </div>
                 <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
@@ -37,7 +37,7 @@
                         [type]="showConfirmPassword ? 'text' : 'password'" required
                         [class.invalid]="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched">
                     <button type="button" (click)="togglePasswordVisibility('confirmPassword')" class="toggle-password">
-                        <img src="../../../../../assets/icons/eye-icon.png" alt="Toggle Password Visibility">
+                        <mat-icon>{{ showConfirmPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
                     </button>
                 </div>
                 <div *ngIf="registerForm.errors?.['passwordMismatch']" class="error-message">

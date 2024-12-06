@@ -1,0 +1,38 @@
+.dialog-container {
+    padding: 24px;
+    background-color: #202124;
+    color: white;
+}
+
+h2 {
+    margin-bottom: 24px;
+    color: white;
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+mat-form-field {
+    width: 100%;
+}
+
+.dialog-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 24px;
+}
+
+mat-button-toggle-group {
+    width: 100%;
+    margin-bottom: 16px;
+}
+
+mat-button-toggle {
+    flex: 1;
+}
+
+::ng-deep .mat-button-toggle-checked {
+    background-color: #1a73e8;
+}

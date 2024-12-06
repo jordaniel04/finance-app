@@ -2,17 +2,18 @@
     max-width: 400px;
     margin: 0 auto;
     padding: 2rem;
-    background-color: #202124;
+    background-color: #3c3c3d;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    color: white;
 }
 
 h2 {
     text-align: center;
     margin-bottom: 1.5rem;
-    color: #202124;
+    color: #FFFFFF;
     font-size: 24px;
 }
 
@@ -27,11 +28,11 @@ h2 {
     align-items: center;
     justify-content: center;
     background-color: #1a73e8;
-    color: white;
+    color: #FFFFFF;
     width: 100%;
     padding: 12px;
     border-radius: 4px;
-    border: 1px solid #5f6368;
+    border: 1px solid #454647;
     font-size: 14px;
     cursor: pointer;
     transition: background-color 0.2s;
@@ -64,6 +65,7 @@ h2 {
 
 .separator span {
     padding: 0 1rem;
+    color: #FFFFFF;
 }
 
 .form-group {
@@ -73,7 +75,7 @@ h2 {
 label {
     display: block;
     margin-bottom: 0.5rem;
-    color: #202124;
+    color: #FFFFFF;
     font-size: 14px;
 }
 
@@ -127,4 +129,36 @@ a {
 
 a:hover {
     text-decoration: underline;
+}
+
+.password-container {
+    position: relative;
+    width: 100%;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: #5f6368;
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s;
+}
+
+.toggle-password:hover {
+    background-color: rgba(95, 99, 104, 0.1);
+}
+
+.toggle-password mat-icon {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
 }

@@ -9,6 +9,7 @@ import { AuthService } from '../../../../services/auth.service';
 })
 export class LoginComponent {
   loginForm: FormGroup;
+  showPassword = false;
   errorMessage: string = '';
 
   constructor(
@@ -52,5 +53,9 @@ export class LoginComponent {
       next: (user) => console.log('Login con Google exitoso', user),
       error: (err) => console.error('Error en login con Google', err)
     });
+  }
+
+  togglePasswordVisibility() {
+    this.showPassword = !this.showPassword;
   }
 }

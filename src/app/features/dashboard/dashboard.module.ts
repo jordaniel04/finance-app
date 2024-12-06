@@ -1,19 +1,38 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule, Routes } from '@angular/router';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatDialogModule } from '@angular/material/dialog';
+import { MatButtonModule } from '@angular/material/button';
+import { MatButtonToggleModule } from '@angular/material/button-toggle';
+import { MatInputModule } from '@angular/material/input';
+import { MatDatepickerModule } from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatSelectModule } from '@angular/material/select';
 
-const routes: Routes = [
-  { path: '', component: DashboardComponent }
-];
+import { DashboardComponent } from './pages/dashboard/dashboard.component';
+import { AddTransactionDialogComponent } from './components/add-transaction-dialog/add-transaction-dialog.component';
+import { DashboardRoutingModule } from './dashboard-routing.module';
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    AddTransactionDialogComponent
   ],
   imports: [
     CommonModule,
-    RouterModule.forChild(routes)
+    DashboardRoutingModule,
+    ReactiveFormsModule,
+    MatDialogModule,
+    MatButtonModule,
+    MatButtonToggleModule,
+    MatInputModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatSelectModule
   ]
 })
 export class DashboardModule { }
