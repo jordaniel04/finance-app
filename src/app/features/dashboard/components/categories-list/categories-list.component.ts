@@ -14,8 +14,8 @@ export class CategoriesListComponent implements OnInit {
 
   constructor(
     public dialogRef: MatDialogRef<CategoriesListComponent>,
-    private dialog: MatDialog,
-    private categoriesService: CategoriesService
+    private readonly dialog: MatDialog,
+    private readonly categoriesService: CategoriesService
   ) {}
 
   ngOnInit() {

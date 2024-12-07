@@ -20,7 +20,7 @@ export class CategoryDialogComponent {
   isEditing: boolean;
 
   constructor(
-    private fb: FormBuilder,
+    private readonly fb: FormBuilder,
     public dialogRef: MatDialogRef<CategoryDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: { category?: Category }
   ) {

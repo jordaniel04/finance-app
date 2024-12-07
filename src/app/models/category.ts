@@ -4,4 +4,8 @@ export interface Category {
     icon: string;
     color: string;
     type: 'income' | 'expense';
+    createdBy?: string;
+    createdAt?: Date;
+    updatedBy?: string;
+    updatedAt?: Date;
 }
