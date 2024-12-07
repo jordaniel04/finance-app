@@ -9,3 +9,11 @@ export interface Transaction {
     createdAt?: Date;
     updatedAt?: Date;
 }
+
+export interface TransactionGroup {
+    date: Date;
+    transactions: Transaction[];
+    totalIncome: number;
+    totalExpense: number;
+    expanded: boolean;
+}

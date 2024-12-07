@@ -54,7 +54,7 @@ export class DashboardComponent implements OnInit {
   }
 
   openCategories() {
-    const dialogRef = this.dialog.open(CategoriesListComponent, {
+    this.dialog.open(CategoriesListComponent, {
       width: '100%',
       height: '100%',
       maxWidth: '100%',
@@ -68,7 +68,7 @@ export class DashboardComponent implements OnInit {
   }
 
   openTransactions() {
-    const dialogRef = this.dialog.open(TransactionsListComponent, {
+    this.dialog.open(TransactionsListComponent, {
       width: '100%',
       height: '100%',
       maxWidth: '100%',

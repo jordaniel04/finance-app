@@ -1,29 +1,20 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { animate, state, style, transition, trigger } from '@angular/animations';
-import { DateAdapter } from '@angular/material/core';
-import { registerLocaleData } from '@angular/common';
-import localeEs from '@angular/common/locales/es';
+import { TransactionsService } from '../../../../services/transactions.service';
+import { Transaction, TransactionGroup } from '../../../../models/transaction';
+import { AddTransactionDialogComponent } from '../add-transaction-dialog/add-transaction-dialog.component';
+import { CategoriesService } from '../../../../services/categories.service';
+import { map, switchMap } from 'rxjs/operators';
 
-registerLocaleData(localeEs, 'es');
-
-interface Transaction {
-  id: string;
-  category: string;
-  amount: number;
-  date: Date;
-  type: 'income' | 'expense';
-  description: string;
-  icon: string;
+interface TransactionWithCategory extends Transaction {
   color: string;
+  icon: string;
+  category: string;
 }
 
-interface TransactionGroup {
-  date: Date;
-  transactions: Transaction[];
-  totalIncome: number;
-  totalExpense: number;
-  expanded: boolean;
+interface TransactionGroupWithCategory extends Omit<TransactionGroup, 'transactions'> {
+  transactions: TransactionWithCategory[];
 }
 
 @Component({
@@ -40,30 +31,51 @@ interface TransactionGroup {
 })
 export class TransactionsListComponent implements OnInit {
   displayedColumns: string[] = ['date', 'totalIncome', 'totalExpense'];
-  transactions: Transaction[] = [
-    { id: '1', category: 'Salario', amount: 2500, date: new Date('2024-03-05'), type: 'income', description: 'Salario mensual', icon: 'payments', color: '#4CAF50' },
-    { id: '2', category: 'Comida', amount: -50, date: new Date('2024-03-05'), type: 'expense', description: 'Almuerzo', icon: 'restaurant', color: '#F44336' },
-    { id: '3', category: 'Transporte', amount: -25, date: new Date('2024-03-05'), type: 'expense', description: 'Taxi', icon: 'directions_car', color: '#F44336' },
-    { id: '4', category: 'Freelance', amount: 300, date: new Date('2024-03-04'), type: 'income', description: 'Proyecto web', icon: 'computer', color: '#4CAF50' },
-  ];
-
-  transactionGroups: TransactionGroup[] = [];
-
+  transactions: TransactionWithCategory[] = [];
+  transactionGroups: TransactionGroupWithCategory[] = [];
   monthlyTotals = {
     income: 0,
     expense: 0,
     balance: 0
   };
 
-  constructor(public dialogRef: MatDialogRef<TransactionsListComponent>) {}
+  constructor(
+    public dialogRef: MatDialogRef<TransactionsListComponent>,
+    private readonly dialog: MatDialog,
+    private readonly transactionsService: TransactionsService,
+    private readonly categoriesService: CategoriesService
+  ) {}
 
   ngOnInit() {
-    this.groupTransactionsByDate();
-    this.calculateMonthlyTotals();
+    this.loadTransactions();
+  }
+
+  loadTransactions() {
+    this.transactionsService.getTransactions().pipe(
+      switchMap(transactions => {
+        return this.categoriesService.getCategories().pipe(
+          map(categories => {
+            return transactions.map(transaction => {
+              const category = categories.find(c => c.id === transaction.categoryId);
+              return {
+                ...transaction,
+                color: category?.color || '#000000',
+                icon: category?.icon || 'attach_money',
+                category: category?.name || 'Sin categoría'
+              };
+            });
+          })
+        );
+      })
+    ).subscribe(transactions => {
+      this.transactions = transactions;
+      this.groupTransactionsByDate();
+      this.calculateMonthlyTotals();
+    });
   }
 
   groupTransactionsByDate() {
-    const groups = new Map<string, Transaction[]>();
+    const groups = new Map<string, TransactionWithCategory[]>();
     
     this.transactions.forEach(transaction => {
       const dateStr = transaction.date.toDateString();
@@ -75,7 +87,7 @@ export class TransactionsListComponent implements OnInit {
 
     this.transactionGroups = Array.from(groups.entries()).map(([dateStr, transactions]) => ({
       date: new Date(dateStr),
-      transactions: transactions,
+      transactions,
       totalIncome: transactions.reduce((sum, t) => t.type === 'income' ? sum + t.amount : sum, 0),
       totalExpense: transactions.reduce((sum, t) => t.type === 'expense' ? sum + Math.abs(t.amount) : sum, 0),
       expanded: false
@@ -100,5 +112,18 @@ export class TransactionsListComponent implements OnInit {
 
   close() {
     this.dialogRef.close();
+  }
+
+  openAddTransactionDialog() {
+    const dialogRef = this.dialog.open(AddTransactionDialogComponent, {
+      width: '400px',
+      disableClose: true
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.transactionsService.addTransaction(result);
+      }
+    });
   }
 }
