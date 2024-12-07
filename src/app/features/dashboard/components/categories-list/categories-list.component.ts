@@ -63,4 +63,9 @@ export class CategoriesListComponent implements OnInit {
   close() {
     this.dialogRef.close();
   }
+
+  handleKeyDown(event: KeyboardEvent) {
+    event.stopPropagation();
+    return false;
+  }
 }

@@ -1,11 +1,11 @@
-<div class="dialog-container p-6">
+<div class="dialog-container p-6" (keydown)="$event.stopPropagation()">
     <h2 class="text-xl font-semibold mb-4">{{ isEditing ? 'Editar' : 'Nueva' }} Categoría</h2>
 
     <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()">
         <div class="form-group mb-4">
             <mat-form-field appearance="fill" class="w-full">
                 <mat-label>Nombre</mat-label>
-                <input matInput formControlName="name" required>
+                <input matInput formControlName="name" required [readonly]="isEditing">
             </mat-form-field>
         </div>
 
