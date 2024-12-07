@@ -12,12 +12,6 @@ import { Category } from '../../../../models/category';
 })
 export class AddTransactionDialogComponent implements OnInit {
   transactionForm: FormGroup;
-  categories: Category[] = [
-    { id: '1', name: 'Salario', type: 'income' },
-    { id: '2', name: 'Freelance', type: 'income' },
-    { id: '3', name: 'Alimentación', type: 'expense' },
-    { id: '4', name: 'Transporte', type: 'expense' }
-  ]; // Esto será reemplazado por datos reales de un servicio
 
   constructor(
     private fb: FormBuilder,
@@ -43,7 +37,8 @@ export class AddTransactionDialogComponent implements OnInit {
 
   getFilteredCategories() {
     const type = this.transactionForm.get('type')?.value;
-    return this.categories.filter(category => category.type === type);
+    // return this.categories.filter(category => category.type === type);
+    return null
   }
 
   onSubmit() {

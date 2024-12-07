@@ -6,8 +6,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
-import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE } from '@angular/material/core';
-import { MomentDateAdapter } from '@angular/material-moment-adapter';
+import { DateAdapter, MAT_DATE_FORMATS, MAT_DATE_LOCALE, NativeDateAdapter } from '@angular/material/core';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
@@ -20,16 +19,18 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { CategoriesListComponent } from './components/categories-list/categories-list.component';
 import { TransactionsListComponent } from './components/transactions-list/transactions-list.component';
 import { MatExpansionModule } from '@angular/material/expansion';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { CategoryDialogComponent } from './components/category-dialog/category-dialog.component';
 
 const MY_FORMATS = {
   parse: {
-    dateInput: 'DD/MM/YYYY',
+    dateInput: 'dd/MM/yyyy',
   },
   display: {
-    dateInput: 'DD/MM/YYYY',
-    monthYearLabel: 'MMMM YYYY',
-    dateA11yLabel: 'LL',
-    monthYearA11yLabel: 'MMMM YYYY',
+    dateInput: 'dd/MM/yyyy',
+    monthYearLabel: 'MMM yyyy',
+    dateA11yLabel: 'dd/MM/yyyy',
+    monthYearA11yLabel: 'MMM yyyy',
   },
 };
 
@@ -42,7 +43,8 @@ const routes: Routes = [
     DashboardComponent,
     AddTransactionDialogComponent,
     CategoriesListComponent,
-    TransactionsListComponent
+    TransactionsListComponent,
+    CategoryDialogComponent
   ],
   imports: [
     CommonModule,
@@ -59,13 +61,14 @@ const routes: Routes = [
     MatMenuModule,
     MatCardModule,
     MatProgressBarModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatTooltipModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
     {
       provide: DateAdapter,
-      useClass: MomentDateAdapter,
+      useClass: NativeDateAdapter,
       deps: [MAT_DATE_LOCALE]
     },
     {

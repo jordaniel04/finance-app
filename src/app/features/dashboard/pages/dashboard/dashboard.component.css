@@ -147,3 +147,16 @@
     background-color: #673AB7 !important;
     color: white !important;
 }
+
+.user-info {
+    display: flex;
+    align-items: end;
+}
+
+.user-info mat-icon {
+    margin-right: 8px;
+}
+
+.mat-icon {
+    cursor: pointer;
+}

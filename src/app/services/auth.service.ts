@@ -13,6 +13,14 @@ export class AuthService {
     private readonly router: Router
   ) {}
 
+  getUser() {
+    const user = this.auth.currentUser;
+    return {
+      firstName: user?.displayName?.split(' ')[0] ?? 'Usuario',
+      lastName: user?.displayName?.split(' ')[1] ?? ''
+    };
+  }
+
   login(email: string, password: string) {
     return from(signInWithEmailAndPassword(this.auth, email, password))
       .pipe(

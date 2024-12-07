@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { AddTransactionDialogComponent } from '../../components/add-transaction-dialog/add-transaction-dialog.component';
 import { CategoriesListComponent } from '../../components/categories-list/categories-list.component';
 import { TransactionsListComponent } from '../../components/transactions-list/transactions-list.component';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -23,7 +24,9 @@ export class DashboardComponent implements OnInit {
     { name: 'Servicios', value: 372.90 }
   ];
 
-  constructor(private dialog: MatDialog) {}
+  user!: { firstName: string; lastName: string };
+
+  constructor(private dialog: MatDialog, private authService: AuthService) {}
 
   get totalExpenses(): number {
     return this.expensesData.reduce((acc, curr) => acc + curr.value, 0);
@@ -33,7 +36,9 @@ export class DashboardComponent implements OnInit {
     return (value / this.totalExpenses) * 100;
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.user = this.authService.getUser();
+  }
 
   openAddTransactionDialog() {
     const dialogRef = this.dialog.open(AddTransactionDialogComponent, {

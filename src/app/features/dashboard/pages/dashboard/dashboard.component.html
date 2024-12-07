@@ -2,6 +2,10 @@
     <header class="dashboard-header">
         <div class="user-section">
             <h1>Mi Billetera</h1>
+            <div class="user-info">
+                <mat-icon matTooltip="{{ user.firstName }} {{ user.lastName }}">account_circle</mat-icon>
+                <!-- <span>{{ user.firstName }} {{ user.lastName }}</span> -->
+            </div>
             <button mat-icon-button [matMenuTriggerFor]="menu">
                 <mat-icon>more_vert</mat-icon>
             </button>
