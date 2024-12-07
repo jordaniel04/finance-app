@@ -14,23 +14,26 @@
                         {{group.date | date:'EEEE, d MMMM yyyy':'':'es'}}
                     </mat-panel-title>
                     <mat-panel-description class="amounts-summary">
-                        <span class="income">{{group.totalIncome | customCurrency}}</span>
-                        <span class="expense">{{group.totalExpense | customCurrency}}</span>
+                        <span class="income" *ngIf="group.totalIncome > 0">+{{group.totalIncome | customCurrency}}</span>
+                        <span class="expense" *ngIf="group.totalExpense > 0">-{{group.totalExpense | customCurrency}}</span>
                     </mat-panel-description>
                 </mat-expansion-panel-header>
 
-                <div class="transaction-details">
-                    <div *ngFor="let transaction of group.transactions" class="transaction-item">
-                        <div class="transaction-icon" [style.background-color]="transaction.color">
-                            <mat-icon>{{transaction.icon}}</mat-icon>
+                <div class="transaction-item" *ngFor="let transaction of group.transactions">
+                    <div class="transaction-date">
+                        {{transaction.date | date:'HH:mm'}}
+                    </div>
+                    <div class="transaction-info">
+                        <div class="category-info">
+                            <mat-icon [style.color]="transaction.categoryColor">{{transaction.categoryIcon}}</mat-icon>
+                            <div class="transaction-details">
+                                <span class="category-name">{{transaction.categoryName}}</span>
+                                <span class="description">{{transaction.description}}</span>
+                            </div>
                         </div>
-                        <div class="transaction-info">
-                            <span class="category">{{transaction.category}}</span>
-                            <span class="description">{{transaction.description}}</span>
-                        </div>
-                        <span class="amount" [class.income]="transaction.type === 'income'"
-                            [class.expense]="transaction.type === 'expense'">
-                            {{transaction.amount | customCurrency}}
+                        <span class="amount" [class.income]="transaction.type === 'income'" 
+                              [class.expense]="transaction.type === 'expense'">
+                            {{transaction.type === 'income' ? '+' : '-'}}{{transaction.amount | customCurrency}}
                         </span>
                     </div>
                 </div>

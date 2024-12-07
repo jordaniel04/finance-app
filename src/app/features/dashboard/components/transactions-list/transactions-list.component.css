@@ -1,13 +1,12 @@
 .transactions-container {
-    height: 100vh;
     display: flex;
     flex-direction: column;
-    background-color: #f5f5f5;
+    height: 100vh;
     width: 100vw;
     position: fixed;
     top: 0;
     left: 0;
-    overflow-y: auto;
+    background: white;
 }
 
 .transactions-header {
@@ -39,7 +38,7 @@
     right: 0;
     background-color: white;
     padding: 16px;
-    box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 16px;
@@ -146,4 +145,90 @@ mat-panel-description {
     bottom: 96px;
     right: 24px;
     z-index: 1000;
+}
+
+.transaction-group {
+    margin-bottom: 24px;
+}
+
+.group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 16px;
+    background-color: rgba(0, 0, 0, 0.04);
+}
+
+.group-header h3 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.transaction-item {
+    display: flex;
+    padding: 12px 16px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.transaction-date {
+    min-width: 50px;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    margin-right: 16px;
+}
+
+.transaction-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+}
+
+.category-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.transaction-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.category-name {
+    font-weight: 500;
+}
+
+.description {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.amount {
+    font-weight: 500;
+}
+
+.income {
+    color: #4caf50;
+}
+
+.expense {
+    color: #f44336;
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+}
+
+.expand-icon {
+    margin-left: 8px;
+}
+
+.transaction-items {
+    background: white;
 }

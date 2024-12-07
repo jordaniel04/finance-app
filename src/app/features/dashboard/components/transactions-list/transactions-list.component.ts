@@ -8,9 +8,9 @@ import { CategoriesService } from '../../../../services/categories.service';
 import { map, switchMap } from 'rxjs/operators';
 
 interface TransactionWithCategory extends Transaction {
-  color: string;
-  icon: string;
-  category: string;
+  categoryColor: string;
+  categoryIcon: string;
+  categoryName: string;
 }
 
 interface TransactionGroupWithCategory extends Omit<TransactionGroup, 'transactions'> {
@@ -55,55 +55,51 @@ export class TransactionsListComponent implements OnInit {
       switchMap(transactions => {
         return this.categoriesService.getCategories().pipe(
           map(categories => {
-            return transactions.map(transaction => {
+            const transactionsWithCategory = transactions.map(transaction => {
               const category = categories.find(c => c.id === transaction.categoryId);
               return {
                 ...transaction,
-                color: category?.color || '#000000',
-                icon: category?.icon || 'attach_money',
-                category: category?.name || 'Sin categoría'
+                categoryName: category?.name || 'Sin categoría',
+                categoryIcon: category?.icon || 'attach_money',
+                categoryColor: category?.color || '#000000'
               };
             });
+
+            // Agrupar por fecha
+            const groups = transactionsWithCategory.reduce((acc, curr) => {
+              const dateKey = new Date(curr.date).toDateString();
+              if (!acc[dateKey]) {
+                acc[dateKey] = {
+                  date: new Date(curr.date),
+                  transactions: [],
+                  totalIncome: 0,
+                  totalExpense: 0
+                };
+              }
+              acc[dateKey].transactions.push(curr);
+              if (curr.type === 'income') {
+                acc[dateKey].totalIncome += curr.amount;
+              } else {
+                acc[dateKey].totalExpense += curr.amount;
+              }
+              return acc;
+            }, {} as Record<string, any>);
+
+            this.transactionGroups = Object.values(groups).sort((a, b) => 
+              b.date.getTime() - a.date.getTime()
+            );
+
+            // Calcular totales mensuales
+            this.monthlyTotals = {
+              income: this.transactionGroups.reduce((sum, group) => sum + group.totalIncome, 0),
+              expense: this.transactionGroups.reduce((sum, group) => sum + group.totalExpense, 0),
+              balance: 0
+            };
+            this.monthlyTotals.balance = this.monthlyTotals.income - this.monthlyTotals.expense;
           })
         );
       })
-    ).subscribe(transactions => {
-      this.transactions = transactions;
-      this.groupTransactionsByDate();
-      this.calculateMonthlyTotals();
-    });
-  }
-
-  groupTransactionsByDate() {
-    const groups = new Map<string, TransactionWithCategory[]>();
-    
-    this.transactions.forEach(transaction => {
-      const dateStr = transaction.date.toDateString();
-      if (!groups.has(dateStr)) {
-        groups.set(dateStr, []);
-      }
-      groups.get(dateStr)?.push(transaction);
-    });
-
-    this.transactionGroups = Array.from(groups.entries()).map(([dateStr, transactions]) => ({
-      date: new Date(dateStr),
-      transactions,
-      totalIncome: transactions.reduce((sum, t) => t.type === 'income' ? sum + t.amount : sum, 0),
-      totalExpense: transactions.reduce((sum, t) => t.type === 'expense' ? sum + Math.abs(t.amount) : sum, 0),
-      expanded: false
-    }));
-  }
-
-  calculateMonthlyTotals() {
-    this.monthlyTotals.income = this.transactions
-      .filter(t => t.type === 'income')
-      .reduce((sum, t) => sum + t.amount, 0);
-    
-    this.monthlyTotals.expense = this.transactions
-      .filter(t => t.type === 'expense')
-      .reduce((sum, t) => sum + Math.abs(t.amount), 0);
-    
-    this.monthlyTotals.balance = this.monthlyTotals.income - this.monthlyTotals.expense;
+    ).subscribe();
   }
 
   toggleGroup(group: TransactionGroup) {
@@ -117,7 +113,9 @@ export class TransactionsListComponent implements OnInit {
   openAddTransactionDialog() {
     const dialogRef = this.dialog.open(AddTransactionDialogComponent, {
       width: '400px',
-      disableClose: true
+      disableClose: true,
+      position: { top: '20px' },
+      panelClass: 'transaction-dialog'
     });
 
     dialogRef.afterClosed().subscribe(result => {

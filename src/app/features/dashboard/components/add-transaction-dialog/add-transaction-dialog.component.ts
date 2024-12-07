@@ -4,6 +4,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 import { DateAdapter } from '@angular/material/core';
 import { Transaction } from '../../../../models/transaction';
 import { Category } from '../../../../models/category';
+import { CategoriesService } from '../../../../services/categories.service';
 
 @Component({
   selector: 'app-add-transaction-dialog',
@@ -12,15 +13,17 @@ import { Category } from '../../../../models/category';
 })
 export class AddTransactionDialogComponent implements OnInit {
   transactionForm: FormGroup;
+  categories: Category[] = [];
 
   constructor(
-    private fb: FormBuilder,
-    private dialogRef: MatDialogRef<AddTransactionDialogComponent>,
-    private dateAdapter: DateAdapter<any>
+    private readonly fb: FormBuilder,
+    private readonly dialogRef: MatDialogRef<AddTransactionDialogComponent>,
+    private readonly dateAdapter: DateAdapter<any>,
+    private readonly categoriesService: CategoriesService
   ) {
     this.dateAdapter.setLocale('es');
     this.transactionForm = this.fb.group({
-      type: ['income', Validators.required],
+      type: ['expense', Validators.required],
       amount: ['', [Validators.required, Validators.min(0)]],
       description: ['', Validators.required],
       date: [new Date(), Validators.required],
@@ -29,16 +32,17 @@ export class AddTransactionDialogComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.loadCategories();
     this.dateAdapter.setLocale('es');
-    this.transactionForm.get('type')?.valueChanges.subscribe(type => {
-      this.transactionForm.patchValue({ categoryId: '' });
-    });
+    // this.transactionForm.get('type')?.valueChanges.subscribe(type => {
+    //   this.transactionForm.patchValue({ categoryId: '' });
+    // });
   }
 
-  getFilteredCategories() {
-    const type = this.transactionForm.get('type')?.value;
-    // return this.categories.filter(category => category.type === type);
-    return null
+  loadCategories() {
+    this.categoriesService.getCategories().subscribe(categories => {
+      this.categories = categories;
+    });
   }
 
   onSubmit() {

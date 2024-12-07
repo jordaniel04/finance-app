@@ -14,8 +14,11 @@
             <mat-form-field appearance="fill">
                 <mat-label>Categoría</mat-label>
                 <mat-select formControlName="categoryId">
-                    <mat-option *ngFor="let category of getFilteredCategories()" [value]="category.id">
-                        {{category.name}}
+                    <mat-option *ngFor="let category of categories" [value]="category.id">
+                        <div class="category-option">
+                            <mat-icon [style.color]="category.color">{{category.icon}}</mat-icon>
+                            <span>{{category.name}}</span>
+                        </div>
                     </mat-option>
                 </mat-select>
             </mat-form-field>
