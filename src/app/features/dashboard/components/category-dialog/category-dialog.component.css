@@ -1,0 +1,10 @@
+.mat-button-toggle-group {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+mat-button-toggle {
+    flex: 1;
+    text-align: center;
+}

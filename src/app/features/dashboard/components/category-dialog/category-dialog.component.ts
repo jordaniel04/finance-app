@@ -9,6 +9,13 @@ import { Category } from '../../../../models/category';
   styleUrls: ['./category-dialog.component.css']
 })
 export class CategoryDialogComponent {
+  iconList: string[] = [
+    'shopping_cart', 'restaurant', 'local_taxi', 'movie',
+    'fitness_center', 'school', 'local_hospital', 'home',
+    'work', 'attach_money', 'account_balance', 'credit_card',
+    'local_grocery_store', 'directions_car', 'flight', 'hotel'
+  ];
+
   categoryForm: FormGroup;
   isEditing: boolean;
 
@@ -34,5 +41,10 @@ export class CategoryDialogComponent {
 
   onCancel() {
     this.dialogRef.close();
+  }
+
+  onIconSelect(event: any) {
+    const selectedIcon = event.value;
+    this.dialogRef.close({ ...this.categoryForm.value, icon: selectedIcon });
   }
 }
