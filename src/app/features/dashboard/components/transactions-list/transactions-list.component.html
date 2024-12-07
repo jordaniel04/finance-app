@@ -19,24 +19,10 @@
                     </mat-panel-description>
                 </mat-expansion-panel-header>
 
-                <div class="transaction-item" *ngFor="let transaction of group.transactions">
-                    <div class="transaction-date">
-                        {{transaction.date | date:'HH:mm'}}
-                    </div>
-                    <div class="transaction-info">
-                        <div class="category-info">
-                            <mat-icon [style.color]="transaction.categoryColor">{{transaction.categoryIcon}}</mat-icon>
-                            <div class="transaction-details">
-                                <span class="category-name">{{transaction.categoryName}}</span>
-                                <span class="description">{{transaction.description}}</span>
-                            </div>
-                        </div>
-                        <span class="amount" [class.income]="transaction.type === 'income'" 
-                              [class.expense]="transaction.type === 'expense'">
-                            {{transaction.type === 'income' ? '+' : '-'}}{{transaction.amount | customCurrency}}
-                        </span>
-                    </div>
-                </div>
+                <app-transaction-item 
+                    *ngFor="let transaction of group.transactions"
+                    [transaction]="transaction">
+                </app-transaction-item>
             </mat-expansion-panel>
         </mat-accordion>
     </div>

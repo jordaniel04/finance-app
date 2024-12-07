@@ -22,6 +22,7 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CategoryDialogComponent } from './components/category-dialog/category-dialog.component';
 import { SharedModule } from '../../shared/shared.module';
+import { TransactionItemComponent } from './components/transactions-list/transaction-item/transaction-item.component';
 
 const MY_FORMATS = {
   parse: {
@@ -45,7 +46,8 @@ const routes: Routes = [
     AddTransactionDialogComponent,
     CategoriesListComponent,
     TransactionsListComponent,
-    CategoryDialogComponent
+    CategoryDialogComponent,
+    TransactionItemComponent
   ],
   imports: [
     CommonModule,

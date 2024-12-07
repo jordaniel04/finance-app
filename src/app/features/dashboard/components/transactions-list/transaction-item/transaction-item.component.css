@@ -1,0 +1,52 @@
+.transaction-item {
+    display: flex;
+    padding: 12px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+}
+
+.transaction-date {
+    min-width: 50px;
+    color: rgba(0, 0, 0, 0.6);
+    font-size: 14px;
+    margin-right: 16px;
+}
+
+.transaction-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex: 1;
+}
+
+.category-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.transaction-details {
+    display: flex;
+    flex-direction: column;
+}
+
+.category-name {
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.87);
+}
+
+.description {
+    font-size: 12px;
+    color: rgba(0, 0, 0, 0.6);
+}
+
+.amount {
+    font-weight: 500;
+}
+
+.income {
+    color: #4caf50;
+}
+
+.expense {
+    color: #f44336;
+}
