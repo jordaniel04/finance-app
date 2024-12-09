@@ -31,82 +31,53 @@
     padding-bottom: 120px;
 }
 
-.monthly-summary {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: white;
-    padding: 16px;
-    box-shadow: 0 -2px 4px rgba(0,0,0,0.1);
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
+.mat-expansion-panel {
+    margin-bottom: 16px;
+    border-radius: 8px !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
 }
 
-.summary-item {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
+.mat-expansion-panel-header {
+    height: auto !important;
+    padding: 16px !important;
+    background-color: #f5f5f5;
 }
 
-.summary-item .label {
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.6);
-}
-
-.summary-item .amount {
-    font-size: 16px;
+.mat-expansion-panel-header-title {
+    color: rgba(0, 0, 0, 0.87);
     font-weight: 500;
+    text-transform: capitalize;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
 }
 
-.summary-item.balance {
-    border-left: 1px solid rgba(0, 0, 0, 0.12);
+.date-group-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
 }
 
-.balance .amount {
-    font-size: 18px;
-    font-weight: 600;
+.date-label {
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.87);
 }
 
 .amounts-summary {
     display: flex;
     gap: 16px;
     justify-content: flex-end;
+    margin-left: auto;
 }
 
-.transaction-details {
-    margin-top: 16px;
-}
-
-.transaction-item {
-    display: flex;
-    align-items: center;
-    padding: 12px;
-    gap: 16px;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
-}
-
-.category-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.transaction-details {
-    display: flex;
-    flex-direction: column;
-}
-
-.category-name {
+.amounts-summary span {
     font-weight: 500;
-    color: rgba(0, 0, 0, 0.87);
+    font-size: 14px;
 }
 
-.description {
-    font-size: 12px;
-    color: rgba(0, 0, 0, 0.6);
+.mat-expansion-panel-content {
+    background-color: white;
 }
 
 .income {
@@ -145,10 +116,6 @@
 .summary-item .amount {
     font-size: 16px;
     font-weight: 500;
-}
-
-.summary-item.balance {
-    border-left: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .balance .amount {

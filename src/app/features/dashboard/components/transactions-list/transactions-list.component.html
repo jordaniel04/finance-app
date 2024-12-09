@@ -8,20 +8,23 @@
 
     <div class="transactions-list">
         <mat-accordion>
-            <mat-expansion-panel *ngFor="let group of transactionGroups">
+            <mat-expansion-panel *ngFor="let group of transactionGroups" [expanded]="group.expanded"
+                (opened)="group.expanded = true" (closed)="group.expanded = false">
                 <mat-expansion-panel-header>
                     <mat-panel-title>
-                        {{group.date | date:'EEEE, d MMMM yyyy':'':'es'}}
+                        <div class="date-group-header">
+                            <span class="date-label">{{group.date | date:'EEEE, d MMMM yyyy':'':'es'}}</span>
+                            <div class="amounts-summary">
+                                <span class="income" *ngIf="group.totalIncome > 0">+{{group.totalIncome |
+                                    customCurrency}}</span>
+                                <span class="expense" *ngIf="group.totalExpense > 0">-{{group.totalExpense |
+                                    customCurrency}}</span>
+                            </div>
+                        </div>
                     </mat-panel-title>
-                    <mat-panel-description class="amounts-summary">
-                        <span class="income" *ngIf="group.totalIncome > 0">+{{group.totalIncome | customCurrency}}</span>
-                        <span class="expense" *ngIf="group.totalExpense > 0">-{{group.totalExpense | customCurrency}}</span>
-                    </mat-panel-description>
                 </mat-expansion-panel-header>
 
-                <app-transaction-item 
-                    *ngFor="let transaction of group.transactions"
-                    [transaction]="transaction">
+                <app-transaction-item *ngFor="let transaction of group.transactions" [transaction]="transaction">
                 </app-transaction-item>
             </mat-expansion-panel>
         </mat-accordion>
@@ -38,8 +41,8 @@
         </div>
         <div class="summary-item balance">
             <span class="label">Saldo</span>
-            <span class="amount" [class.income]="monthlyTotals.balance >= 0" 
-                                [class.expense]="monthlyTotals.balance < 0">
+            <span class="amount" [class.income]="monthlyTotals.balance >= 0"
+                [class.expense]="monthlyTotals.balance < 0">
                 {{monthlyTotals.balance | customCurrency}}
             </span>
         </div>

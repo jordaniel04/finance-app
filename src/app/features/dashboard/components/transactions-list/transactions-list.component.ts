@@ -65,15 +65,17 @@ export class TransactionsListComponent implements OnInit {
               };
             });
 
-            // Agrupar por fecha
             const groups = transactionsWithCategory.reduce((acc, curr) => {
-              const dateKey = new Date(curr.date).toDateString();
+              const date = curr.date;
+              const dateKey = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+              
               if (!acc[dateKey]) {
                 acc[dateKey] = {
-                  date: new Date(curr.date),
+                  date: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
                   transactions: [],
                   totalIncome: 0,
-                  totalExpense: 0
+                  totalExpense: 0,
+                  expanded: false
                 };
               }
               acc[dateKey].transactions.push(curr);
@@ -89,7 +91,6 @@ export class TransactionsListComponent implements OnInit {
               b.date.getTime() - a.date.getTime()
             );
 
-            // Calcular totales mensuales
             this.monthlyTotals = {
               income: this.transactionGroups.reduce((sum, group) => sum + group.totalIncome, 0),
               expense: this.transactionGroups.reduce((sum, group) => sum + group.totalExpense, 0),
