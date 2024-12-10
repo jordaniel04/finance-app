@@ -132,10 +132,18 @@
 
 .month-picker {
     margin-left: auto;
-    width: 120px;
+    width: 140px;
 }
 
 ::ng-deep .month-picker .mat-form-field-wrapper {
     margin-bottom: 0;
     padding-bottom: 0;
+}
+
+::ng-deep .month-picker-panel .mat-calendar-period-button {
+    pointer-events: none;
+}
+
+::ng-deep .month-picker-panel .mat-calendar-arrow {
+    display: none;
 }

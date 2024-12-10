@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { TransactionsService } from '../../../../services/transactions.service';
@@ -7,6 +7,7 @@ import { AddTransactionDialogComponent } from '../add-transaction-dialog/add-tra
 import { CategoriesService } from '../../../../services/categories.service';
 import { map, switchMap } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
+import { MatDatepicker } from '@angular/material/datepicker';
 
 interface TransactionWithCategory extends Transaction {
   categoryColor: string;
@@ -42,6 +43,8 @@ export class TransactionsListComponent implements OnInit {
 
   selectedDate = new FormControl(new Date());
 
+  @ViewChild('picker') picker!: MatDatepicker<any>;
+
   constructor(
     public dialogRef: MatDialogRef<TransactionsListComponent>,
     private readonly dialog: MatDialog,
@@ -57,8 +60,16 @@ export class TransactionsListComponent implements OnInit {
     });
   }
 
+  monthSelected(date: Date) {
+    this.selectedDate.setValue(date);
+    this.picker.close();
+    this.loadTransactions();
+  }
+
   loadTransactions() {
-    const date = this.selectedDate.value || new Date();
+    const date = this.selectedDate.value;
+    if (!date) return;
+    
     const year = date.getFullYear();
     const month = date.getMonth();
 
