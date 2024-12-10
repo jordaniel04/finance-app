@@ -12,9 +12,11 @@ export class TransactionsService {
 
   addTransaction(transaction: Transaction): Promise<void> {
     const transactionsRef = collection(this.firestore, 'transactions');
+    const date = new Date(transaction.date);
+    
     return addDoc(transactionsRef, {
       ...transaction,
-      date: Timestamp.fromDate(new Date(transaction.date))
+      date: Timestamp.fromDate(date)
     }).then();
   }
 
@@ -23,7 +25,7 @@ export class TransactionsService {
     let q = query(transactionsRef, orderBy('date', 'desc'));
 
     if (year !== undefined && month !== undefined) {
-      const startDate = new Date(year, month, 1);
+      const startDate = new Date(year, month, 1, 0, 0, 0);
       const endDate = new Date(year, month + 1, 0, 23, 59, 59);
       
       q = query(

@@ -10,12 +10,13 @@ import { CategoryDialogComponent } from '../category-dialog/category-dialog.comp
   styleUrls: ['./categories-list.component.css']
 })
 export class CategoriesListComponent implements OnInit {
-  categories: Category[] = [];
+  incomeCategories: Category[] = [];
+  expenseCategories: Category[] = [];
 
   constructor(
-    public dialogRef: MatDialogRef<CategoriesListComponent>,
+    private readonly categoriesService: CategoriesService,
     private readonly dialog: MatDialog,
-    private readonly categoriesService: CategoriesService
+    public dialogRef: MatDialogRef<CategoriesListComponent>
   ) {}
 
   ngOnInit() {
@@ -24,7 +25,8 @@ export class CategoriesListComponent implements OnInit {
 
   loadCategories() {
     this.categoriesService.getCategories().subscribe(categories => {
-      this.categories = categories;
+      this.incomeCategories = categories.filter(cat => cat.type === 'income');
+      this.expenseCategories = categories.filter(cat => cat.type === 'expense');
     });
   }
 

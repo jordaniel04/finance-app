@@ -22,11 +22,12 @@ export class AddTransactionDialogComponent implements OnInit {
     private readonly categoriesService: CategoriesService
   ) {
     this.dateAdapter.setLocale('es');
+    const now = new Date();
     this.transactionForm = this.fb.group({
       type: ['expense', Validators.required],
       amount: ['', [Validators.required, Validators.min(0)]],
       description: ['', Validators.required],
-      date: [new Date(), Validators.required],
+      date: [now, Validators.required],
       categoryId: ['', Validators.required]
     });
   }
@@ -47,7 +48,22 @@ export class AddTransactionDialogComponent implements OnInit {
 
   onSubmit() {
     if (this.transactionForm.valid) {
-      const transaction: Transaction = this.transactionForm.value;
+      const formValue = this.transactionForm.value;
+      const selectedDate = formValue.date;
+      
+      // Aseguramos que la fecha mantiene la hora actual si es hoy
+      const now = new Date();
+      if (selectedDate.toDateString() === now.toDateString()) {
+        selectedDate.setHours(now.getHours(), now.getMinutes(), now.getSeconds());
+      } else {
+        // Si es otra fecha, establecemos una hora predeterminada (12:00)
+        selectedDate.setHours(12, 0, 0);
+      }
+
+      const transaction: Transaction = {
+        ...formValue,
+        date: selectedDate
+      };
       this.dialogRef.close(transaction);
     }
   }

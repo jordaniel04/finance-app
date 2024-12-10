@@ -6,13 +6,33 @@
         <h2>Categorías</h2>
     </header>
 
-    <div class="categories-grid">
-        <div *ngFor="let category of categories" class="category-item">
-            <div class="category-icon" [style.background-color]="category.color" (click)="editCategory(category)"
-                (keydown)="handleKeyDown($event)">
-                <mat-icon>{{category.icon}}</mat-icon>
+    <div class="categories-sections">
+        <div class="category-section">
+            <h3>Categorías de Ingreso</h3>
+            <div class="categories-grid">
+                <div *ngFor="let category of incomeCategories" class="category-item">
+                    <div class="category-icon" [style.background-color]="category.color" (click)="editCategory(category)"
+                        (keydown)="handleKeyDown($event)">
+                        <mat-icon>{{category.icon}}</mat-icon>
+                    </div>
+                    <span class="category-name">{{category.name}}</span>
+                </div>
             </div>
-            <span class="category-name">{{category.name}}</span>
+        </div>
+
+        <mat-divider></mat-divider>
+
+        <div class="category-section">
+            <h3>Categorías de Egreso</h3>
+            <div class="categories-grid">
+                <div *ngFor="let category of expenseCategories" class="category-item">
+                    <div class="category-icon" [style.background-color]="category.color" (click)="editCategory(category)"
+                        (keydown)="handleKeyDown($event)">
+                        <mat-icon>{{category.icon}}</mat-icon>
+                    </div>
+                    <span class="category-name">{{category.name}}</span>
+                </div>
+            </div>
         </div>
     </div>
 
