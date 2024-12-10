@@ -6,6 +6,7 @@ import { Transaction, TransactionGroup } from '../../../../models/transaction';
 import { AddTransactionDialogComponent } from '../add-transaction-dialog/add-transaction-dialog.component';
 import { CategoriesService } from '../../../../services/categories.service';
 import { map, switchMap } from 'rxjs/operators';
+import { FormControl } from '@angular/forms';
 
 interface TransactionWithCategory extends Transaction {
   categoryColor: string;
@@ -39,6 +40,8 @@ export class TransactionsListComponent implements OnInit {
     balance: 0
   };
 
+  selectedDate = new FormControl(new Date());
+
   constructor(
     public dialogRef: MatDialogRef<TransactionsListComponent>,
     private readonly dialog: MatDialog,
@@ -48,10 +51,18 @@ export class TransactionsListComponent implements OnInit {
 
   ngOnInit() {
     this.loadTransactions();
+    
+    this.selectedDate.valueChanges.subscribe(() => {
+      this.loadTransactions();
+    });
   }
 
   loadTransactions() {
-    this.transactionsService.getTransactions().pipe(
+    const date = this.selectedDate.value || new Date();
+    const year = date.getFullYear();
+    const month = date.getMonth();
+
+    this.transactionsService.getTransactions(year, month).pipe(
       switchMap(transactions => {
         return this.categoriesService.getCategories().pipe(
           map(categories => {

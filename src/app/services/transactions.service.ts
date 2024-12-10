@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, query, orderBy, collectionData, Timestamp } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, query, orderBy, collectionData, Timestamp, where } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Transaction } from '../models/transaction';
@@ -18,9 +18,21 @@ export class TransactionsService {
     }).then();
   }
 
-  getTransactions(): Observable<Transaction[]> {
+  getTransactions(year?: number, month?: number): Observable<Transaction[]> {
     const transactionsRef = collection(this.firestore, 'transactions');
-    const q = query(transactionsRef, orderBy('date', 'desc'));
+    let q = query(transactionsRef, orderBy('date', 'desc'));
+
+    if (year !== undefined && month !== undefined) {
+      const startDate = new Date(year, month, 1);
+      const endDate = new Date(year, month + 1, 0, 23, 59, 59);
+      
+      q = query(
+        transactionsRef,
+        where('date', '>=', Timestamp.fromDate(startDate)),
+        where('date', '<=', Timestamp.fromDate(endDate)),
+        orderBy('date', 'desc')
+      );
+    }
     
     return collectionData(q, { idField: 'id' }).pipe(
       map(transactions => transactions.map(transaction => ({

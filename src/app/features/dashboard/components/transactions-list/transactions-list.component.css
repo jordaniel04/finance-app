@@ -129,3 +129,13 @@
     right: 24px;
     z-index: 1000;
 }
+
+.month-picker {
+    margin-left: auto;
+    width: 120px;
+}
+
+::ng-deep .month-picker .mat-form-field-wrapper {
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
