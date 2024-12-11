@@ -45,6 +45,6 @@ export class CategoryDialogComponent {
 
   onIconSelect(event: any) {
     const selectedIcon = event.value;
-    this.dialogRef.close({ ...this.categoryForm.value, icon: selectedIcon });
+    this.categoryForm.patchValue({ icon: selectedIcon });
   }
 }
