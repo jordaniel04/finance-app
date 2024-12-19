@@ -14,6 +14,7 @@ import { CategoriesService } from '../../../../services/categories.service';
 export class AddTransactionDialogComponent implements OnInit {
   transactionForm: FormGroup;
   categories: Category[] = [];
+  filteredCategories: Category[] = [];
 
   constructor(
     private readonly fb: FormBuilder,
@@ -35,15 +36,25 @@ export class AddTransactionDialogComponent implements OnInit {
   ngOnInit() {
     this.loadCategories();
     this.dateAdapter.setLocale('es');
-    // this.transactionForm.get('type')?.valueChanges.subscribe(type => {
-    //   this.transactionForm.patchValue({ categoryId: '' });
-    // });
+    
+    // Suscribirse a los cambios del tipo de transacción
+    this.transactionForm.get('type')?.valueChanges.subscribe(type => {
+      this.filterCategories(type);
+      // Resetear la categoría seleccionada cuando cambie el tipo
+      this.transactionForm.patchValue({ categoryId: '' });
+    });
   }
 
   loadCategories() {
     this.categoriesService.getCategories().subscribe(categories => {
       this.categories = categories;
+      // Filtrar categorías iniciales basadas en el tipo inicial (expense)
+      this.filterCategories(this.transactionForm.get('type')?.value);
     });
+  }
+
+  filterCategories(type: 'income' | 'expense') {
+    this.filteredCategories = this.categories.filter(category => category.type === type);
   }
 
   onSubmit() {

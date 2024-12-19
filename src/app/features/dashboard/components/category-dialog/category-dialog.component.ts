@@ -47,4 +47,10 @@ export class CategoryDialogComponent {
     const selectedIcon = event.value;
     this.categoryForm.patchValue({ icon: selectedIcon });
   }
+
+  deleteCategory() {
+    if (confirm('¿Está seguro de eliminar esta categoría?')) {
+      this.dialogRef.close({ delete: true, categoryId: this.data.category?.id });
+    }
+  }
 }

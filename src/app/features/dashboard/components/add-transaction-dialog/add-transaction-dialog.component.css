@@ -1,7 +1,7 @@
 .dialog-container {
-    padding: 20px;
-    background-color: #202124;
-    color: white;
+    background-color: var(--dialog-background);
+    color: var(--primary-text);
+    padding: 16px;
     max-height: 90vh;
     overflow-y: auto;
     position: relative;
@@ -60,7 +60,7 @@
 
 h2 {
     margin-bottom: 16px;
-    color: white;
+    color: var(--primary-text);
     font-size: 18px;
 }
 
@@ -71,6 +71,7 @@ h2 {
 mat-form-field {
     width: 100%;
     font-size: 14px;
+    color: var(--primary-text);
 }
 
 ::ng-deep .mat-form-field-wrapper {
@@ -83,45 +84,45 @@ mat-form-field {
     gap: 8px;
     margin-top: 16px;
     padding: 16px 0 0;
-    background-color: #202124;
+    background-color: var(--surface-color);
     position: sticky;
     bottom: 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.12);
+    border-top: 1px solid var(--divider-color);
 }
 
 /* Estilos para el botón Cancelar */
 ::ng-deep .dialog-actions .mat-button {
-    color: white !important;
-    background-color: #1a73e8;
+    color: #ffffff !important;
+    background-color: #424242;
     padding: 0 16px;
     transition: background-color 0.3s ease;
 }
 
 ::ng-deep .dialog-actions .mat-button:hover {
-    background-color: #1557b0;
+    background-color: #616161;
 }
 
 ::ng-deep .dialog-actions .mat-button:active {
-    background-color: #104d9e;
+    background-color: #757575;
 }
 
 /* Estilos para el botón Guardar */
 ::ng-deep .dialog-actions .mat-raised-button.mat-primary {
-    background-color: #1a73e8;
+    background-color: #4CAF50;
     color: white !important;
     transition: background-color 0.3s ease;
 }
 
 ::ng-deep .dialog-actions .mat-raised-button.mat-primary:hover {
-    background-color: #1557b0;
+    background-color: #43A047;
 }
 
 ::ng-deep .dialog-actions .mat-raised-button.mat-primary:active {
-    background-color: #104d9e;
+    background-color: #388E3C;
 }
 
 ::ng-deep .dialog-actions .mat-raised-button.mat-primary:disabled {
-    background-color: rgba(26, 115, 232, 0.5);
+    background-color: rgba(76, 175, 80, 0.5);
     color: rgba(255, 255, 255, 0.5) !important;
 }
 
@@ -135,14 +136,12 @@ mat-button-toggle {
 }
 
 ::ng-deep .mat-button-toggle-checked {
-    background-color: #1a73e8;
+    background-color: #1a73e8 !important;
+    color: white !important;
 }
 
 ::ng-deep .mat-datepicker-content::-webkit-scrollbar {
     display: none;
-}
-
-::ng-deep .mat-datepicker-content {
     -ms-overflow-style: none;
     scrollbar-width: none;
 }
@@ -153,7 +152,7 @@ mat-button-toggle {
 }
 
 .dialog-container::-webkit-scrollbar-track {
-    background: #202124;
+    background: var(--surface-color);
 }
 
 .dialog-container::-webkit-scrollbar-thumb {
@@ -171,6 +170,23 @@ mat-button-toggle {
 
 ::ng-deep .mat-form-field-appearance-fill .mat-form-field-flex {
     padding: 0.5em 0.75em 0 0.75em !important;
+    background-color: var(--input-background) !important;
+}
+
+::ng-deep .mat-select-value-text {
+    color: var(--primary-text) !important;
+}
+
+::ng-deep .mat-form-field-label {
+    color: var(--secondary-text) !important;
+}
+
+::ng-deep .mat-button-toggle-group {
+    background-color: var(--surface-color);
+}
+
+::ng-deep .mat-button-toggle {
+    color: var(--primary-text);
 }
 
 /* Estilos para el diálogo de transacciones */

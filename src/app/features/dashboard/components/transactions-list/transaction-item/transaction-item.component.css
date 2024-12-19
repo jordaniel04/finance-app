@@ -1,12 +1,12 @@
 .transaction-item {
     display: flex;
     padding: 12px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    border-bottom: 1px solid var(--divider-color);
 }
 
 .transaction-date {
     min-width: 50px;
-    color: rgba(0, 0, 0, 0.6);
+    color: var(--primary-text);
     font-size: 14px;
     margin-right: 16px;
 }
@@ -27,16 +27,17 @@
 .transaction-details {
     display: flex;
     flex-direction: column;
+    color: var(--secondary-text);
 }
 
 .category-name {
     font-weight: 500;
-    color: rgba(0, 0, 0, 0.87);
+    color: var(--primary-text);
 }
 
 .description {
     font-size: 12px;
-    color: rgba(0, 0, 0, 0.6);
+    color: #b0bec5;
 }
 
 .amount {

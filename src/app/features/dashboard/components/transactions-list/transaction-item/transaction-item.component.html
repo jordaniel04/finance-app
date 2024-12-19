@@ -4,7 +4,7 @@
     </div>
     <div class="transaction-info">
         <div class="category-info">
-            <mat-icon [style.color]="transaction.categoryColor">{{transaction.categoryIcon}}</mat-icon>
+            <mat-icon [ngStyle]="{color: transaction.categoryColor}">{{transaction.categoryIcon}}</mat-icon>
             <div class="transaction-details">
                 <span class="category-name">{{transaction.categoryName}}</span>
                 <span class="description">{{transaction.description}}</span>

@@ -26,6 +26,11 @@
                     <mat-icon>bar_chart</mat-icon>
                     <span>Reportes</span>
                 </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item (click)="toggleTheme()">
+                    <mat-icon>{{ isDarkTheme ? 'light_mode' : 'dark_mode' }}</mat-icon>
+                    <span>{{ isDarkTheme ? 'Tema Claro' : 'Tema Oscuro' }}</span>
+                </button>
             </mat-menu>
         </div>
     </header>

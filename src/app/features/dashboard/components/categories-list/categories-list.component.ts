@@ -38,7 +38,11 @@ export class CategoriesListComponent implements OnInit {
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.categoriesService.addCategory(result);
+        if (result.delete) {
+          this.categoriesService.deleteCategory(result.categoryId);
+        } else {
+          this.categoriesService.addCategory(result);
+        }
       }
     });
   }
@@ -50,8 +54,12 @@ export class CategoriesListComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      if (result && category.id) {
-        this.categoriesService.updateCategory(category.id, result);
+      if (result) {
+        if (result.delete) {
+          this.categoriesService.deleteCategory(result.categoryId);
+        } else if (category.id) {
+          this.categoriesService.updateCategory(category.id, result);
+        }
       }
     });
   }

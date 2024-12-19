@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { AddTransactionDialogComponent } from '../../components/add-transaction-dialog/add-transaction-dialog.component';
 import { CategoriesListComponent } from '../../components/categories-list/categories-list.component';
 import { TransactionsListComponent } from '../../components/transactions-list/transactions-list.component';
 import { AuthService } from 'src/app/services/auth.service';
+import { DOCUMENT } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
@@ -25,8 +26,13 @@ export class DashboardComponent implements OnInit {
   ];
 
   user!: { firstName: string; lastName: string };
+  isDarkTheme = true;
 
-  constructor(private dialog: MatDialog, private authService: AuthService) {}
+  constructor(
+    private dialog: MatDialog, 
+    private authService: AuthService,
+    @Inject(DOCUMENT) private document: Document
+  ) {}
 
   get totalExpenses(): number {
     return this.expensesData.reduce((acc, curr) => acc + curr.value, 0);
@@ -38,6 +44,26 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.authService.getUser();
+    // Recuperar el tema guardado en localStorage
+    const savedTheme = localStorage.getItem('theme');
+    this.isDarkTheme = savedTheme ? savedTheme === 'dark' : true;
+    this.applyTheme();
+  }
+
+  toggleTheme() {
+    this.isDarkTheme = !this.isDarkTheme;
+    localStorage.setItem('theme', this.isDarkTheme ? 'dark' : 'light');
+    this.applyTheme();
+  }
+
+  private applyTheme() {
+    if (this.isDarkTheme) {
+      this.document.body.classList.remove('light-theme');
+      this.document.body.classList.add('dark-theme');
+    } else {
+      this.document.body.classList.remove('dark-theme');
+      this.document.body.classList.add('light-theme');
+    }
   }
 
   openAddTransactionDialog() {
