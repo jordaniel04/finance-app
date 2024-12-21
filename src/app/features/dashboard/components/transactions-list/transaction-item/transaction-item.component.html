@@ -10,9 +10,24 @@
                 <span class="description">{{transaction.description}}</span>
             </div>
         </div>
-        <span class="amount" [class.income]="transaction.type === 'income'"
-            [class.expense]="transaction.type === 'expense'">
-            {{transaction.type === 'income' ? '+' : '-'}}{{transaction.amount | customCurrency}}
-        </span>
+        <div class="transaction-actions">
+            <span class="amount" [class.income]="transaction.type === 'income'"
+                [class.expense]="transaction.type === 'expense'">
+                {{transaction.type === 'income' ? '+' : '-'}}{{transaction.amount | customCurrency}}
+            </span>
+            <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+                <mat-icon>more_vert</mat-icon>
+            </button>
+            <mat-menu #menu="matMenu">
+                <button mat-menu-item (click)="onEdit()">
+                    <mat-icon>edit</mat-icon>
+                    <span>Editar</span>
+                </button>
+                <button mat-menu-item (click)="onDelete()">
+                    <mat-icon color="warn">delete</mat-icon>
+                    <span class="text-warn">Eliminar</span>
+                </button>
+            </mat-menu>
+        </div>
     </div>
 </div>

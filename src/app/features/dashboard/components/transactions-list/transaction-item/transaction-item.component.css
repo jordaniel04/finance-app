@@ -51,3 +51,26 @@
 .expense {
     color: #f44336;
 }
+
+.transaction-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.text-warn {
+    color: var(--warn-color);
+}
+
+::ng-deep .mat-menu-item .mat-icon {
+    margin-right: 8px;
+}
+
+button[mat-icon-button] {
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.transaction-item:hover button[mat-icon-button] {
+    opacity: 1;
+}

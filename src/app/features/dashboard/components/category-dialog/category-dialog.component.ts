@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { Category } from '../../../../models/category';
+import { ALL_ICONS, MATERIAL_ICONS, CATEGORY_COLORS } from '../../../../core/constants/icons.constants';
 
 @Component({
   selector: 'app-category-dialog',
@@ -9,12 +10,9 @@ import { Category } from '../../../../models/category';
   styleUrls: ['./category-dialog.component.css']
 })
 export class CategoryDialogComponent {
-  iconList: string[] = [
-    'shopping_cart', 'restaurant', 'local_taxi', 'movie',
-    'fitness_center', 'school', 'local_hospital', 'home',
-    'work', 'attach_money', 'account_balance', 'credit_card',
-    'local_grocery_store', 'directions_car', 'flight', 'hotel'
-  ];
+  iconList = ALL_ICONS;
+  iconsByCategory = MATERIAL_ICONS;
+  categoryColors = CATEGORY_COLORS;
 
   categoryForm: FormGroup;
   isEditing: boolean;
@@ -26,10 +24,19 @@ export class CategoryDialogComponent {
   ) {
     this.isEditing = !!data.category;
     this.categoryForm = this.fb.group({
-      name: [data.category?.name || '', Validators.required],
-      icon: [data.category?.icon || '', Validators.required],
-      color: [data.category?.color || '#000000', Validators.required],
-      type: [data.category?.type || 'expense', Validators.required]
+      name: [data.category?.name ?? '', Validators.required],
+      icon: [data.category?.icon ?? ALL_ICONS[0], Validators.required],
+      color: [data.category?.color ?? CATEGORY_COLORS.EXPENSE[0], Validators.required],
+      type: [data.category?.type ?? 'expense', Validators.required]
+    });
+
+    this.categoryForm.get('type')?.valueChanges.subscribe(type => {
+      if (!this.isEditing) {
+        const defaultColor = type === 'income' ? 
+          CATEGORY_COLORS.INCOME[0] : 
+          CATEGORY_COLORS.EXPENSE[0];
+        this.categoryForm.patchValue({ color: defaultColor });
+      }
     });
   }
 

@@ -34,7 +34,8 @@
                     </mat-panel-title>
                 </mat-expansion-panel-header>
 
-                <app-transaction-item *ngFor="let transaction of group.transactions" [transaction]="transaction">
+                <app-transaction-item *ngFor="let transaction of group.transactions" [transaction]="transaction"
+                    (edit)="onEditTransaction($event)" (delete)="onDeleteTransaction($event)">
                 </app-transaction-item>
             </mat-expansion-panel>
         </mat-accordion>

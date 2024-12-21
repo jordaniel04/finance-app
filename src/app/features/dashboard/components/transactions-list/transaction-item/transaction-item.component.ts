@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Transaction } from '../../../../../models/transaction';
 
 interface TransactionWithCategory extends Transaction {
@@ -14,4 +14,16 @@ interface TransactionWithCategory extends Transaction {
 })
 export class TransactionItemComponent {
   @Input() transaction!: TransactionWithCategory;
+  @Output() edit = new EventEmitter<TransactionWithCategory>();
+  @Output() delete = new EventEmitter<TransactionWithCategory>();
+
+  onEdit() {
+    this.edit.emit(this.transaction);
+  }
+
+  onDelete() {
+    if (confirm('¿Está seguro de eliminar esta transacción?')) {
+      this.delete.emit(this.transaction);
+    }
+  }
 }

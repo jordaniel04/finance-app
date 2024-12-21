@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Firestore, collection, addDoc, query, orderBy, collectionData, Timestamp, where } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, query, orderBy, collectionData, Timestamp, where, updateDoc, deleteDoc, doc, CollectionReference } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Transaction } from '../models/transaction';
@@ -8,28 +8,30 @@ import { Transaction } from '../models/transaction';
   providedIn: 'root'
 })
 export class TransactionsService {
-  constructor(private readonly firestore: Firestore) {}
+  private readonly transactionsCollection: CollectionReference;
+
+  constructor(private readonly firestore: Firestore) {
+    this.transactionsCollection = collection(this.firestore, 'transactions');
+  }
 
   addTransaction(transaction: Transaction): Promise<void> {
-    const transactionsRef = collection(this.firestore, 'transactions');
     const date = new Date(transaction.date);
     
-    return addDoc(transactionsRef, {
+    return addDoc(this.transactionsCollection, {
       ...transaction,
       date: Timestamp.fromDate(date)
     }).then();
   }
 
   getTransactions(year?: number, month?: number): Observable<Transaction[]> {
-    const transactionsRef = collection(this.firestore, 'transactions');
-    let q = query(transactionsRef, orderBy('date', 'desc'));
+    let q = query(this.transactionsCollection, orderBy('date', 'desc'));
 
     if (year !== undefined && month !== undefined) {
       const startDate = new Date(year, month, 1, 0, 0, 0);
       const endDate = new Date(year, month + 1, 0, 23, 59, 59);
       
       q = query(
-        transactionsRef,
+        this.transactionsCollection,
         where('date', '>=', Timestamp.fromDate(startDate)),
         where('date', '<=', Timestamp.fromDate(endDate)),
         orderBy('date', 'desc')
@@ -42,5 +44,15 @@ export class TransactionsService {
         date: (transaction['date'] as unknown as Timestamp).toDate()
       })) as Transaction[])
     );
+  }
+
+  updateTransaction(transactionId: string, transaction: Partial<Transaction>) {
+    const docRef = doc(this.transactionsCollection, transactionId);
+    return updateDoc(docRef, transaction);
+  }
+
+  deleteTransaction(transactionId: string) {
+    const docRef = doc(this.transactionsCollection, transactionId);
+    return deleteDoc(docRef);
   }
 }

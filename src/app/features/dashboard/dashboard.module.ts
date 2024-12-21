@@ -11,7 +11,6 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatButtonModule } from '@angular/material/button';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import { AddTransactionDialogComponent } from './components/add-transaction-dialog/add-transaction-dialog.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatCardModule } from '@angular/material/card';
@@ -24,6 +23,7 @@ import { CategoryDialogComponent } from './components/category-dialog/category-d
 import { SharedModule } from '../../shared/shared.module';
 import { TransactionItemComponent } from './components/transactions-list/transaction-item/transaction-item.component';
 import { MatDividerModule } from '@angular/material/divider';
+import { TransactionDialogComponent } from './components/transaction-dialog/transaction-dialog.component';
 
 const MY_FORMATS = {
   parse: {
@@ -44,11 +44,11 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     DashboardComponent,
-    AddTransactionDialogComponent,
     CategoriesListComponent,
     TransactionsListComponent,
     CategoryDialogComponent,
-    TransactionItemComponent
+    TransactionItemComponent,
+    TransactionDialogComponent
   ],
   imports: [
     CommonModule,

@@ -3,7 +3,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { TransactionsService } from '../../../../services/transactions.service';
 import { Transaction, TransactionGroup } from '../../../../models/transaction';
-import { AddTransactionDialogComponent } from '../add-transaction-dialog/add-transaction-dialog.component';
+import { TransactionDialogComponent } from '../transaction-dialog/transaction-dialog.component';
 import { CategoriesService } from '../../../../services/categories.service';
 import { map, switchMap } from 'rxjs/operators';
 import { FormControl } from '@angular/forms';
@@ -81,9 +81,9 @@ export class TransactionsListComponent implements OnInit {
               const category = categories.find(c => c.id === transaction.categoryId);
               return {
                 ...transaction,
-                categoryName: category?.name || 'Sin categoría',
-                categoryIcon: category?.icon || 'attach_money',
-                categoryColor: category?.color || '#000000'
+                categoryName: category?.name ?? 'Sin categoría',
+                categoryIcon: category?.icon ?? 'attach_money',
+                categoryColor: category?.color ?? '#000000'
               };
             });
 
@@ -134,17 +134,45 @@ export class TransactionsListComponent implements OnInit {
   }
 
   openAddTransactionDialog() {
-    const dialogRef = this.dialog.open(AddTransactionDialogComponent, {
+    const dialogRef = this.dialog.open(TransactionDialogComponent, {
       width: '400px',
       disableClose: true,
       position: { top: '20px' },
-      panelClass: 'transaction-dialog'
+      panelClass: 'transaction-dialog',
+      data: {}
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        this.transactionsService.addTransaction(result);
+        this.transactionsService.addTransaction(result)
+          .then(() => this.loadTransactions());
       }
     });
+  }
+
+  onEditTransaction(transaction: Transaction) {
+    const dialogRef = this.dialog.open(TransactionDialogComponent, {
+      width: '400px',
+      data: { transaction }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        if (result.delete) {
+          this.transactionsService.deleteTransaction(result.transactionId)
+            .then(() => this.loadTransactions());
+        } else {
+          this.transactionsService.updateTransaction(transaction.id!, result)
+            .then(() => this.loadTransactions());
+        }
+      }
+    });
+  }
+
+  onDeleteTransaction(transaction: Transaction) {
+    if (confirm('¿Está seguro de eliminar esta transacción?')) {
+      this.transactionsService.deleteTransaction(transaction.id!)
+        .then(() => this.loadTransactions());
+    }
   }
 }

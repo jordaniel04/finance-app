@@ -1,10 +1,11 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
-import { AddTransactionDialogComponent } from '../../components/add-transaction-dialog/add-transaction-dialog.component';
+import { TransactionDialogComponent } from '../../components/transaction-dialog/transaction-dialog.component';
 import { CategoriesListComponent } from '../../components/categories-list/categories-list.component';
 import { TransactionsListComponent } from '../../components/transactions-list/transactions-list.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { DOCUMENT } from '@angular/common';
+import { Transaction } from 'src/app/models/transaction';
 
 @Component({
   selector: 'app-dashboard',
@@ -29,9 +30,9 @@ export class DashboardComponent implements OnInit {
   isDarkTheme = true;
 
   constructor(
-    private dialog: MatDialog, 
-    private authService: AuthService,
-    @Inject(DOCUMENT) private document: Document
+    private readonly dialog: MatDialog, 
+    private readonly authService: AuthService,
+    @Inject(DOCUMENT) private readonly document: Document
   ) {}
 
   get totalExpenses(): number {
@@ -66,15 +67,16 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  openAddTransactionDialog() {
-    const dialogRef = this.dialog.open(AddTransactionDialogComponent, {
+  openTransactionDialog(transaction?: Transaction) {
+    const dialogRef = this.dialog.open(TransactionDialogComponent, {
       width: '400px',
-      disableClose: true
+      disableClose: true,
+      data: { transaction }
     });
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {
-        console.log('Transaction added:', result);
+        console.log('Transaction:', result);
       }
     });
   }
