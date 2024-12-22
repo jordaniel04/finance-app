@@ -25,6 +25,14 @@ export class TransactionDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data?: { transaction?: Transaction }
   ) {
     this.dateAdapter.setLocale('es');
+    
+    // Configurar el diálogo para que sea responsive
+    this.dialogRef.updatePosition({
+        top: '20px'
+    });
+    
+    this.dialogRef.updateSize('90vw', 'auto');
+    
     this.isEditing = !!data?.transaction;
     
     this.transactionForm = this.fb.group({
