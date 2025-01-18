@@ -217,3 +217,11 @@ h1, h2, h3, h4, h5, h6 {
 .mat-icon {
     cursor: pointer;
 }
+
+.text-warn {
+    color: #f44336;
+}
+
+.logout-button:hover {
+    background-color: rgba(244, 67, 54, 0.1);
+}

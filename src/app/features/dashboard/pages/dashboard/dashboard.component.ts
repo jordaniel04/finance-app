@@ -6,6 +6,7 @@ import { TransactionsListComponent } from '../../components/transactions-list/tr
 import { AuthService } from 'src/app/services/auth.service';
 import { DOCUMENT } from '@angular/common';
 import { Transaction } from 'src/app/models/transaction';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -32,7 +33,8 @@ export class DashboardComponent implements OnInit {
   constructor(
     private readonly dialog: MatDialog, 
     private readonly authService: AuthService,
-    @Inject(DOCUMENT) private readonly document: Document
+    @Inject(DOCUMENT) private readonly document: Document,
+    private readonly router: Router
   ) {}
 
   get totalExpenses(): number {
@@ -111,5 +113,16 @@ export class DashboardComponent implements OnInit {
 
   addAccount() {
     // Implementar diálogo para agregar cuenta
+  }
+
+  logout() {
+    this.authService.logout().subscribe({
+      next: () => {
+        console.log('Sesión cerrada exitosamente');
+      },
+      error: (error) => {
+        console.error('Error al cerrar sesión:', error);
+      }
+    });
   }
 }

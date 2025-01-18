@@ -31,6 +31,11 @@
                     <mat-icon>{{ isDarkTheme ? 'light_mode' : 'dark_mode' }}</mat-icon>
                     <span>{{ isDarkTheme ? 'Tema Claro' : 'Tema Oscuro' }}</span>
                 </button>
+                <mat-divider></mat-divider>
+                <button mat-menu-item (click)="logout()" class="logout-button">
+                    <mat-icon color="warn">logout</mat-icon>
+                    <span class="text-warn">Cerrar Sesión</span>
+                </button>
             </mat-menu>
         </div>
     </header>
