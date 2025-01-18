@@ -42,20 +42,29 @@
     </div>
 
     <div class="monthly-summary">
-        <div class="summary-item">
-            <span class="label">Ingresos</span>
-            <span class="amount income">+{{monthlyTotals.income | customCurrency}}</span>
-        </div>
-        <div class="summary-item">
-            <span class="label">Egresos</span>
-            <span class="amount expense">-{{monthlyTotals.expense | customCurrency}}</span>
-        </div>
-        <div class="summary-item balance">
-            <span class="label">Saldo</span>
-            <span class="amount" [class.income]="monthlyTotals.balance >= 0"
-                [class.expense]="monthlyTotals.balance < 0">
-                {{monthlyTotals.balance | customCurrency}}
-            </span>
+        <div class="summary-content">
+            <div class="summary-item">
+                <span class="label">Saldo Anterior</span>
+                <span class="amount" [class.income]="monthlyTotals.previousBalance >= 0"
+                    [class.expense]="monthlyTotals.previousBalance < 0">
+                    {{monthlyTotals.previousBalance | customCurrency}}
+                </span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Ingresos</span>
+                <span class="amount income">+{{monthlyTotals.income | customCurrency}}</span>
+            </div>
+            <div class="summary-item">
+                <span class="label">Egresos</span>
+                <span class="amount expense">-{{monthlyTotals.expense | customCurrency}}</span>
+            </div>
+            <div class="summary-item balance">
+                <span class="label">Saldo Total</span>
+                <span class="amount" [class.income]="monthlyTotals.totalBalance >= 0"
+                    [class.expense]="monthlyTotals.totalBalance < 0">
+                    {{monthlyTotals.totalBalance | customCurrency}}
+                </span>
+            </div>
         </div>
     </div>
 

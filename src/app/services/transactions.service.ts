@@ -55,4 +55,23 @@ export class TransactionsService {
     const docRef = doc(this.transactionsCollection, transactionId);
     return deleteDoc(docRef);
   }
+
+  getBalanceBeforeDate(date: Date): Observable<number> {
+    const startOfMonth = new Date(date.getFullYear(), date.getMonth(), 1, 0, 0, 0);
+    
+    const q = query(
+      this.transactionsCollection,
+      where('date', '<', Timestamp.fromDate(startOfMonth)),
+      orderBy('date', 'desc')
+    );
+    
+    return collectionData(q, { idField: 'id' }).pipe(
+      map(transactions => {
+        return transactions.reduce((balance, transaction: any) => {
+          const amount = transaction.amount || 0;
+          return balance + (transaction.type === 'income' ? amount : -amount);
+        }, 0);
+      })
+    );
+  }
 }

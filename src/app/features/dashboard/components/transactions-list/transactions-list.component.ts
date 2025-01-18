@@ -38,7 +38,9 @@ export class TransactionsListComponent implements OnInit {
   monthlyTotals = {
     income: 0,
     expense: 0,
-    balance: 0
+    balance: 0,
+    previousBalance: 0,
+    totalBalance: 0
   };
 
   selectedDate = new FormControl(new Date());
@@ -73,52 +75,63 @@ export class TransactionsListComponent implements OnInit {
     const year = date.getFullYear();
     const month = date.getMonth();
 
-    this.transactionsService.getTransactions(year, month).pipe(
-      switchMap(transactions => {
-        return this.categoriesService.getCategories().pipe(
-          map(categories => {
-            const transactionsWithCategory = transactions.map(transaction => {
-              const category = categories.find(c => c.id === transaction.categoryId);
-              return {
-                ...transaction,
-                categoryName: category?.name ?? 'Sin categoría',
-                categoryIcon: category?.icon ?? 'attach_money',
-                categoryColor: category?.color ?? '#000000'
-              };
-            });
+    this.transactionsService.getBalanceBeforeDate(date).pipe(
+      switchMap(previousBalance => {
+        this.monthlyTotals.previousBalance = previousBalance;
+        
+        return this.transactionsService.getTransactions(year, month).pipe(
+          switchMap(transactions => {
+            return this.categoriesService.getCategories().pipe(
+              map(categories => {
+                const transactionsWithCategory = transactions.map(transaction => {
+                  const category = categories.find(c => c.id === transaction.categoryId);
+                  return {
+                    ...transaction,
+                    categoryName: category?.name ?? 'Sin categoría',
+                    categoryIcon: category?.icon ?? 'attach_money',
+                    categoryColor: category?.color ?? '#000000'
+                  };
+                });
 
-            const groups = transactionsWithCategory.reduce((acc, curr) => {
-              const date = curr.date;
-              const dateKey = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
-              
-              if (!acc[dateKey]) {
-                acc[dateKey] = {
-                  date: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
-                  transactions: [],
-                  totalIncome: 0,
-                  totalExpense: 0,
-                  expanded: false
+                const groups = transactionsWithCategory.reduce((acc, curr) => {
+                  const date = curr.date;
+                  const dateKey = `${date.getFullYear()}-${(date.getMonth() + 1).toString().padStart(2, '0')}-${date.getDate().toString().padStart(2, '0')}`;
+                  
+                  if (!acc[dateKey]) {
+                    acc[dateKey] = {
+                      date: new Date(date.getFullYear(), date.getMonth(), date.getDate()),
+                      transactions: [],
+                      totalIncome: 0,
+                      totalExpense: 0,
+                      expanded: false
+                    };
+                  }
+                  acc[dateKey].transactions.push(curr);
+                  if (curr.type === 'income') {
+                    acc[dateKey].totalIncome += curr.amount;
+                  } else {
+                    acc[dateKey].totalExpense += curr.amount;
+                  }
+                  return acc;
+                }, {} as Record<string, any>);
+
+                this.transactionGroups = Object.values(groups).sort((a, b) => 
+                  b.date.getTime() - a.date.getTime()
+                );
+
+                this.monthlyTotals = {
+                  income: this.transactionGroups.reduce((sum, group) => sum + group.totalIncome, 0),
+                  expense: this.transactionGroups.reduce((sum, group) => sum + group.totalExpense, 0),
+                  balance: 0,
+                  previousBalance: previousBalance,
+                  totalBalance: 0
                 };
-              }
-              acc[dateKey].transactions.push(curr);
-              if (curr.type === 'income') {
-                acc[dateKey].totalIncome += curr.amount;
-              } else {
-                acc[dateKey].totalExpense += curr.amount;
-              }
-              return acc;
-            }, {} as Record<string, any>);
-
-            this.transactionGroups = Object.values(groups).sort((a, b) => 
-              b.date.getTime() - a.date.getTime()
+                
+                this.monthlyTotals.balance = this.monthlyTotals.income - this.monthlyTotals.expense;
+                
+                this.monthlyTotals.totalBalance = this.monthlyTotals.previousBalance + this.monthlyTotals.balance;
+              })
             );
-
-            this.monthlyTotals = {
-              income: this.transactionGroups.reduce((sum, group) => sum + group.totalIncome, 0),
-              expense: this.transactionGroups.reduce((sum, group) => sum + group.totalExpense, 0),
-              balance: 0
-            };
-            this.monthlyTotals.balance = this.monthlyTotals.income - this.monthlyTotals.expense;
           })
         );
       })
