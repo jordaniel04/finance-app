@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { TransactionDialogComponent } from '../../components/transaction-dialog/transaction-dialog.component';
 import { CategoriesListComponent } from '../../components/categories-list/categories-list.component';
 import { TransactionsListComponent } from '../../components/transactions-list/transactions-list.component';
+import { ReportDialogComponent } from '../../components/report-dialog/report-dialog.component';
 import { AuthService } from 'src/app/services/auth.service';
 import { DOCUMENT } from '@angular/common';
 import { Transaction } from 'src/app/models/transaction';
@@ -20,14 +21,6 @@ export class DashboardComponent implements OnInit {
     { name: 'Ahorros', balance: 6220, type: 'savings' }
   ];
 
-  expensesData = [
-    { name: 'Alimentación', value: 300 },
-    { name: 'Transporte', value: 150 },
-    { name: 'Entretenimiento', value: 200 },
-    { name: 'Servicios', value: 372.90 }
-  ];
-
-  user!: { firstName: string; lastName: string };
   isDarkTheme = true;
 
   constructor(
@@ -37,16 +30,7 @@ export class DashboardComponent implements OnInit {
     private readonly router: Router
   ) {}
 
-  get totalExpenses(): number {
-    return this.expensesData.reduce((acc, curr) => acc + curr.value, 0);
-  }
-
-  getExpensePercentage(value: number): number {
-    return (value / this.totalExpenses) * 100;
-  }
-
   ngOnInit() {
-    this.user = this.authService.getUser();
     // Recuperar el tema guardado en localStorage
     const savedTheme = localStorage.getItem('theme');
     this.isDarkTheme = savedTheme ? savedTheme === 'dark' : true;
@@ -69,28 +53,51 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  openTransactionDialog(transaction?: Transaction) {
-    const dialogRef = this.dialog.open(TransactionDialogComponent, {
-      width: '400px',
-      disableClose: true,
-      data: { transaction }
-    });
+  // Método para cerrar todos los diálogos de forma segura
+  private safelyCloseAllDialogs() {
+    // Cerrar todos los diálogos usando el método de Angular
+    this.dialog.closeAll();
+    
+    // Damos un pequeño tiempo para que Angular cierre los diálogos naturalmente
+    // No eliminamos elementos del DOM manualmente para evitar interferencias
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        console.log('Transaction:', result);
-      }
-    });
+  openTransactionDialog(transaction?: Transaction) {
+    // Cerrar diálogos existentes de forma segura
+    this.safelyCloseAllDialogs();
+
+    // Esperar un breve momento para asegurar limpieza completa
+    setTimeout(() => {
+      const dialogRef = this.dialog.open(TransactionDialogComponent, {
+        width: '400px',
+        disableClose: true,
+        data: { transaction },
+        // Evitar conflictos con otros diálogos
+        hasBackdrop: true,
+        backdropClass: 'transaction-dialog-backdrop',
+        panelClass: 'transaction-dialog-panel'
+      });
+
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          console.log('Transaction:', result);
+        }
+      });
+    }, 100);
   }
 
   openCategories() {
-    this.dialog.open(CategoriesListComponent, {
-      width: '100%',
-      height: '100%',
-      maxWidth: '100%',
-      maxHeight: '100%',
-      panelClass: 'full-screen-dialog'
-    });
+    this.safelyCloseAllDialogs();
+    
+    setTimeout(() => {
+      this.dialog.open(CategoriesListComponent, {
+        width: '100%',
+        height: '100%',
+        maxWidth: '100%',
+        maxHeight: '100%',
+        panelClass: 'full-screen-dialog'
+      });
+    }, 100);
   }
 
   openAccounts() {
@@ -98,17 +105,47 @@ export class DashboardComponent implements OnInit {
   }
 
   openTransactions() {
-    this.dialog.open(TransactionsListComponent, {
-      width: '100%',
-      height: '100%',
-      maxWidth: '100%',
-      maxHeight: '100%',
-      panelClass: 'full-screen-dialog'
-    });
+    this.safelyCloseAllDialogs();
+    
+    setTimeout(() => {
+      this.dialog.open(TransactionsListComponent, {
+        width: '100%',
+        height: '100%',
+        maxWidth: '100%',
+        maxHeight: '100%',
+        panelClass: 'full-screen-dialog'
+      });
+    }, 100);
   }
 
   openReports() {
-    // Implementar diálogo de reportes
+    // Cerrar diálogos existentes
+    this.dialog.closeAll();
+
+    setTimeout(() => {
+      try {
+        const dialogRef = this.dialog.open(ReportDialogComponent, {
+          width: '100vw',
+          height: '100vh',
+          maxWidth: '100vw',
+          maxHeight: '100vh',
+          panelClass: ['full-screen-dialog', 'mat-dialog-no-padding'],
+          position: {
+            top: '0',
+            left: '0'
+          },
+          disableClose: false,
+          autoFocus: false,
+          hasBackdrop: true
+        });
+
+        dialogRef.afterClosed().subscribe(() => {
+          console.log('Diálogo de reportes cerrado');
+        });
+      } catch (error) {
+        console.error('Error al abrir el diálogo de reportes:', error);
+      }
+    }, 100);
   }
 
   addAccount() {

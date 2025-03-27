@@ -1,0 +1,588 @@
+.reports-container {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    background-color: var(--background-color);
+    color: var(--primary-text);
+}
+
+.reports-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--divider-color);
+    background-color: var(--surface-color);
+}
+
+.title-section {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.title-section h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--primary-text);
+}
+
+.filter-section {
+    display: flex;
+    align-items: center;
+}
+
+.filter-form {
+    display: flex;
+    gap: 1rem;
+}
+
+.reports-content {
+    flex: 1;
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+.tab-content {
+    padding: 1rem 0;
+}
+
+.charts-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.chart-section {
+    width: 100%;
+}
+
+.canvas-container {
+    position: relative;
+    width: 100%;
+    height: 350px;
+    flex: 1;
+}
+
+.chart-container {
+    position: relative;
+    height: 400px;
+    width: 100%;
+    margin: 20px 0;
+    padding: 15px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 8px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.chart-title {
+    text-align: center;
+    color: white;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+}
+
+.chart-container canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.income-chart {
+    border-left: 4px solid #4caf50;
+}
+
+.expense-chart {
+    border-left: 4px solid #f44336;
+}
+
+.chart-wrapper {
+    height: 300px;
+    width: 100%;
+    flex-grow: 1;
+    position: relative;
+}
+
+.empty-chart {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background-color: var(--surface-color);
+    border-radius: 8px;
+    color: var(--secondary-text);
+    margin-bottom: 1rem;
+}
+
+.empty-chart mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.5rem;
+}
+
+.empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    color: var(--secondary-text);
+    text-align: center;
+}
+
+.empty-state mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+}
+
+.empty-state small {
+    margin-top: 0.5rem;
+    color: var(--secondary-text);
+    opacity: 0.8;
+}
+
+.loading-state {
+    padding: 2rem 1rem;
+    text-align: center;
+}
+
+.category-list, .monthly-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.category-list h3, .monthly-list h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    color: var(--primary-text);
+}
+
+.category-card {
+    background-color: var(--surface-color);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.category-header:hover {
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+.category-right {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.expand-icon {
+    transition: transform 0.3s ease;
+}
+
+.expand-icon.expanded {
+    transform: rotate(180deg);
+}
+
+.category-info {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.category-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    color: white;
+}
+
+.category-name {
+    font-weight: 500;
+    color: var(--primary-text);
+}
+
+.category-amount {
+    font-weight: 500;
+    font-size: 1.1rem;
+}
+
+.positive {
+    color: #4caf50;
+}
+
+.negative {
+    color: #f44336;
+}
+
+.month-breakdown {
+    padding: 0 1rem 1rem;
+}
+
+.month-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.month-table th, .month-table td {
+    padding: 0.5rem;
+    text-align: left;
+}
+
+.month-table th {
+    font-weight: 500;
+    color: var(--secondary-text);
+}
+
+.month-table tr:not(:last-child) td {
+    border-bottom: 1px solid var(--divider-color);
+}
+
+@media (max-width: 768px) {
+    .reports-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .filter-form {
+        flex-direction: column;
+        width: 100%;
+    }
+    
+    .filter-form mat-form-field {
+        width: 100%;
+    }
+}
+
+/* Sobrescribir estilos de Material específicamente para este componente */
+:host ::ng-deep .mat-tab-label {
+    color: var(--primary-text);
+    opacity: 0.8;
+}
+
+:host ::ng-deep .mat-tab-label.mat-tab-label-active {
+    opacity: 1;
+}
+
+:host ::ng-deep .mat-form-field-label {
+    color: var(--secondary-text) !important;
+}
+
+:host ::ng-deep .mat-select-value-text {
+    color: var(--primary-text) !important;
+}
+
+:host ::ng-deep .mat-select-arrow {
+    color: var(--secondary-text) !important;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    color: var(--divider-color);
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline.mat-focused .mat-form-field-outline-thick {
+    color: #1a73e8;
+}
+
+:host ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar {
+    background-color: #1a73e8;
+}
+
+.monthly-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.monthly-section {
+    margin-bottom: 1.5rem;
+}
+
+.section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    color: var(--primary-text);
+}
+
+.income-title {
+    color: #4caf50;
+}
+
+.expense-title {
+    color: #f44336;
+}
+
+.income-card {
+    border-left: 4px solid #4caf50;
+}
+
+.expense-card {
+    border-left: 4px solid #f44336;
+}
+
+/* Estilos para la pestaña de detalle por categoría */
+.category-detail-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.category-selector {
+    width: 100%;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.category-select {
+    width: 100%;
+}
+
+.select-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.category-icon-small {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    color: white;
+}
+
+.empty-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem;
+    color: var(--secondary-text);
+}
+
+.empty-selection mat-icon {
+    font-size: 48px;
+    width: 48px;
+    height: 48px;
+    margin-bottom: 1rem;
+}
+
+.category-transactions {
+    background-color: var(--surface-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.category-header-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.category-info-large {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.category-icon-large {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    color: white;
+}
+
+.category-name-large {
+    font-size: 1.5rem;
+    font-weight: 500;
+    margin: 0;
+    color: var(--primary-text);
+}
+
+.transaction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.transactions-title {
+    margin: 0;
+    font-weight: 500;
+    color: var(--secondary-text);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--divider-color);
+}
+
+.empty-transactions {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: var(--secondary-text);
+}
+
+.empty-transactions mat-icon {
+    font-size: 32px;
+    width: 32px;
+    height: 32px;
+    margin-bottom: 0.5rem;
+}
+
+.transaction-table-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.transaction-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.transaction-table th {
+    text-align: left;
+    padding: 0.75rem;
+    font-weight: 500;
+    color: var(--secondary-text);
+    border-bottom: 1px solid var(--divider-color);
+}
+
+.transaction-table td {
+    padding: 0.75rem;
+    border-bottom: 1px solid var(--divider-color);
+}
+
+.transaction-table tr:last-child td {
+    border-bottom: none;
+}
+
+/* Estilos para la fila de total */
+.total-row {
+    font-weight: 500;
+}
+
+.total-label {
+    text-align: right;
+    padding-right: 1rem;
+}
+
+.total-amount {
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Responsividad para móviles */
+@media (max-width: 768px) {
+    .category-header-detail {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .transaction-table th:first-child,
+    .transaction-table td:first-child {
+        width: 30%;
+    }
+}
+
+.current-period {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background-color: var(--surface-color);
+    border-radius: 8px;
+    margin-bottom: 1rem;
+    font-weight: 500;
+    color: var(--primary-text);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.current-period mat-icon {
+    color: #1a73e8;
+}
+
+/* Estilos para el resumen de categoría */
+.category-summary {
+    margin-top: 1.5rem;
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.05);
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary-total {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.summary-label {
+    font-weight: 500;
+    color: var(--primary-text);
+}
+
+.summary-amount {
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.summary-count {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: var(--secondary-text);
+}
+
+/* Responsividad para móviles */
+@media (max-width: 768px) {
+    .category-header-detail {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+    
+    .transaction-table th:first-child,
+    .transaction-table td:first-child {
+        width: 30%;
+    }
+    
+    .category-summary {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.75rem;
+    }
+}

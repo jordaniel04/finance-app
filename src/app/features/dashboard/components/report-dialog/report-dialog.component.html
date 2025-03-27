@@ -1,0 +1,213 @@
+<div class="reports-container">
+    <header class="reports-header">
+        <div class="title-section">
+            <button mat-icon-button (click)="close()">
+                <mat-icon>arrow_back</mat-icon>
+            </button>
+            <h2>Reportes</h2>
+        </div>
+        <div class="filter-section">
+            <form [formGroup]="filterForm" class="filter-form">
+                <mat-form-field appearance="outline">
+                    <mat-label>Año</mat-label>
+                    <mat-select formControlName="year" (selectionChange)="onFilterChange()">
+                        <mat-option *ngFor="let year of getYears()" [value]="year">
+                            {{ year }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Mes</mat-label>
+                    <mat-select formControlName="month" (selectionChange)="onFilterChange()">
+                        <mat-option *ngFor="let month of months" [value]="month.value">
+                            {{ month.label }}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </form>
+        </div>
+    </header>
+
+    <div class="reports-content">
+        <mat-tab-group>
+            <!-- Tab de Ingresos y Gastos por Categoría -->
+            <mat-tab label="Por Categoría">
+                <div class="tab-content">
+                    <div class="loading-state" *ngIf="loading">
+                        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                        <p>Cargando datos...</p>
+                    </div>
+                    
+                    <div class="empty-state" *ngIf="!loading && categoryData.length === 0">
+                        <mat-icon>insert_chart</mat-icon>
+                        <p>No hay datos para mostrar en el periodo seleccionado</p>
+                    </div>
+                    
+                    <div *ngIf="!loading && categoryData.length > 0" class="charts-container">
+                        <!-- Gráfico de Ingresos -->
+                        <div class="chart-container chart-wrapper" *ngIf="!loading && incomeData.length > 0">
+                            <h3 class="chart-title">Ingresos por Categoría - {{ getMonthName(filterForm.get('month')?.value) }} {{ filterForm.get('year')?.value }}</h3>
+                            <div class="canvas-container">
+                                <canvas id="incomeChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Mensaje si no hay ingresos -->
+                        <div class="empty-chart" *ngIf="!loading && incomeData.length === 0">
+                            <mat-icon>trending_up</mat-icon>
+                            <p>No hay ingresos registrados en este periodo</p>
+                        </div>
+                        
+                        <!-- Gráfico de Gastos -->
+                        <div class="chart-container chart-wrapper" *ngIf="!loading && expenseData.length > 0">
+                            <h3 class="chart-title">Gastos por Categoría - {{ getMonthName(filterForm.get('month')?.value) }} {{ filterForm.get('year')?.value }}</h3>
+                            <div class="canvas-container">
+                                <canvas id="expenseChart"></canvas>
+                            </div>
+                        </div>
+                        
+                        <!-- Mensaje si no hay gastos -->
+                        <div class="empty-chart" *ngIf="!loading && expenseData.length === 0">
+                            <mat-icon>trending_down</mat-icon>
+                            <p>No hay gastos registrados en este periodo</p>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+            
+            <!-- Tab de Gastos Acumulados por Mes -->
+            <mat-tab label="Acumulado por Detalle por Mes">
+                <div class="tab-content">
+                    <div class="empty-state" *ngIf="!loading && monthlyData.length === 0">
+                        <mat-icon>insert_chart</mat-icon>
+                        <p>No hay datos para mostrar en el periodo seleccionado</p>
+                    </div>
+                    
+                    <div class="loading-state" *ngIf="loading">
+                        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                        <p>Cargando datos...</p>
+                    </div>
+                    
+                    <div *ngIf="!loading && monthlyData.length > 0" class="monthly-container">
+                        <!-- Sección de Ingresos -->
+                        <div class="monthly-section" *ngIf="monthlyIncomeData.length > 0">
+                            <h3 class="section-title income-title">
+                                <mat-icon>trending_up</mat-icon>
+                                Ingresos Acumulados por Categoría
+                            </h3>
+                            
+                            <div class="monthly-list">
+                                <mat-card *ngFor="let item of monthlyIncomeData" class="category-card income-card">
+                                    <div class="category-header" (click)="toggleCategoryExpanded(item)">
+                                        <div class="category-info">
+                                            <div class="category-icon" [style.background-color]="item.category.color">
+                                                <mat-icon>{{ item.category.icon }}</mat-icon>
+                                            </div>
+                                            <span class="category-name">{{ item.category.name }}</span>
+                                        </div>
+                                        <div class="category-right">
+                                            <span class="category-amount positive">
+                                                {{ formatAmount(item.total) }}
+                                            </span>
+                                            <mat-icon class="expand-icon" [class.expanded]="item.expanded">
+                                                {{ item.expanded ? 'expand_less' : 'expand_more' }}
+                                            </mat-icon>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="month-breakdown" *ngIf="item.expanded" [@expandCollapse]>
+                                        <table class="month-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Mes</th>
+                                                    <th>Monto</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let month of item.months">
+                                                    <td>{{ getMonthName(month.month) }} {{ month.year }}</td>
+                                                    <td [class.positive]="month.total > 0" [class.negative]="month.total < 0">
+                                                        {{ month.total !== 0 ? formatAmount(getAbsoluteValue(month.total)) : '-' }}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </div>
+                        
+                        <!-- Mensaje si no hay ingresos -->
+                        <div class="empty-chart" *ngIf="!loading && monthlyIncomeData.length === 0">
+                            <mat-icon>trending_up</mat-icon>
+                            <p>No hay ingresos registrados en este periodo</p>
+                        </div>
+                        
+                        <!-- Sección de Gastos -->
+                        <div class="monthly-section" *ngIf="monthlyExpenseData.length > 0">
+                            <h3 class="section-title expense-title">
+                                <mat-icon>trending_down</mat-icon>
+                                Gastos Acumulados por Categoría
+                            </h3>
+                            
+                            <div class="monthly-list">
+                                <mat-card *ngFor="let item of monthlyExpenseData" class="category-card expense-card">
+                                    <div class="category-header" (click)="toggleCategoryExpanded(item)">
+                                        <div class="category-info">
+                                            <div class="category-icon" [style.background-color]="item.category.color">
+                                                <mat-icon>{{ item.category.icon }}</mat-icon>
+                                            </div>
+                                            <span class="category-name">{{ item.category.name }}</span>
+                                        </div>
+                                        <div class="category-right">
+                                            <span class="category-amount negative">
+                                                {{ formatAmount(getAbsoluteValue(item.total)) }}
+                                            </span>
+                                            <mat-icon class="expand-icon" [class.expanded]="item.expanded">
+                                                {{ item.expanded ? 'expand_less' : 'expand_more' }}
+                                            </mat-icon>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="month-breakdown" *ngIf="item.expanded" [@expandCollapse]>
+                                        <table class="month-table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Mes</th>
+                                                    <th>Monto</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr *ngFor="let month of item.months">
+                                                    <td>{{ getMonthName(month.month) }} {{ month.year }}</td>
+                                                    <td [class.positive]="month.total > 0" [class.negative]="month.total < 0">
+                                                        {{ month.total !== 0 ? formatAmount(getAbsoluteValue(month.total)) : '-' }}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </mat-card>
+                            </div>
+                        </div>
+                        
+                        <!-- Mensaje si no hay gastos -->
+                        <div class="empty-chart" *ngIf="!loading && monthlyExpenseData.length === 0">
+                            <mat-icon>trending_down</mat-icon>
+                            <p>No hay gastos registrados en este periodo</p>
+                        </div>
+                    </div>
+                </div>
+            </mat-tab>
+            
+            <!-- Tab de Detalle por Categoría -->
+            <mat-tab label="Detalle por Categoría">
+                <app-category-detail-report 
+                    [filterForm]="filterForm"
+                    [filterChanged]="filterChangeCounter">
+                </app-category-detail-report>
+            </mat-tab>
+        </mat-tab-group>
+    </div>
+</div>

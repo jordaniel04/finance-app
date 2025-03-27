@@ -1,0 +1,134 @@
+<div class="tab-content">
+    <div class="loading-state" *ngIf="loading && !categoryDetail.selectedCategory">
+        <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+        <p>Cargando datos...</p>
+    </div>
+    
+    <div class="empty-state" *ngIf="!loading && availableCategories.length === 0">
+        <mat-icon>insert_chart</mat-icon>
+        <p>No hay categorías con transacciones para el período {{ getMonthName(filterForm.get('month')?.value) }} {{ filterForm.get('year')?.value }}</p>
+        <small>Prueba seleccionando otro mes o año en los filtros superiores</small>
+    </div>
+    
+    <div *ngIf="(!loading || categoryDetail.selectedCategory) && availableCategories.length > 0" class="category-detail-container">
+        <!-- Período actual -->
+        <div class="current-period">
+            <mat-icon>date_range</mat-icon>
+            <span>Período: {{ getMonthName(filterForm.get('month')?.value) }} {{ filterForm.get('year')?.value }}</span>
+        </div>
+        
+        <!-- Selector de categoría -->
+        <div class="category-selector">
+            <mat-form-field appearance="outline" class="category-select">
+                <mat-label>Seleccionar categoría</mat-label>
+                <mat-select [value]="categoryDetail.selectedCategory" (selectionChange)="loadTransactionsByCategory($event.value)">
+                    <mat-select-trigger>
+                        <div class="select-option" *ngIf="categoryDetail.selectedCategory">
+                            <div class="category-icon-small" [style.background-color]="categoryDetail.selectedCategory.color">
+                                <mat-icon>{{ categoryDetail.selectedCategory.icon }}</mat-icon>
+                            </div>
+                            <span>{{ categoryDetail.selectedCategory.name }}</span>
+                        </div>
+                    </mat-select-trigger>
+                    <mat-option *ngFor="let category of availableCategories" [value]="category">
+                        <div class="select-option">
+                            <div class="category-icon-small" [style.background-color]="category.color">
+                                <mat-icon>{{ category.icon }}</mat-icon>
+                            </div>
+                            <span>{{ category.name }}</span>
+                        </div>
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+        
+        <!-- Si no hay categoría seleccionada -->
+        <div class="empty-selection" *ngIf="!categoryDetail.selectedCategory">
+            <mat-icon>category</mat-icon>
+            <p>Selecciona una categoría para ver sus transacciones</p>
+        </div>
+        
+        <!-- Detalle de la categoría seleccionada -->
+        <div class="category-transactions" *ngIf="categoryDetail.selectedCategory">
+            <div class="category-header-detail">
+                <div class="category-info-large">
+                    <div class="category-icon-large" [style.background-color]="categoryDetail.selectedCategory.color">
+                        <mat-icon>{{ categoryDetail.selectedCategory.icon }}</mat-icon>
+                    </div>
+                    <h3 class="category-name-large">{{ categoryDetail.selectedCategory.name }}</h3>
+                </div>
+                <button mat-icon-button color="primary" (click)="clearCategorySelection()">
+                    <mat-icon>close</mat-icon>
+                </button>
+            </div>
+            
+            <!-- Indicador de carga para los datos de categoría -->
+            <div class="category-loading" *ngIf="loading">
+                <mat-progress-bar mode="indeterminate"></mat-progress-bar>
+                <p>Actualizando transacciones...</p>
+            </div>
+            
+            <!-- Transacciones de la categoría -->
+            <div class="transaction-list">
+                <h4 class="transactions-title">
+                    Transacciones - {{ getMonthName(filterForm.get('month')?.value) }} {{ filterForm.get('year')?.value }}
+                </h4>
+                
+                <!-- Si no hay transacciones para esta categoría -->
+                <div class="empty-transactions" *ngIf="categoryDetail.transactions.length === 0 && !loading">
+                    <mat-icon>receipt_long</mat-icon>
+                    <p>No hay transacciones para esta categoría en el periodo seleccionado</p>
+                </div>
+                
+                <!-- Tabla de transacciones -->
+                <div class="transaction-table-container" *ngIf="categoryDetail.transactions.length > 0 && !loading">
+                    <table class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Descripción</th>
+                                <th>Monto</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let transaction of categoryDetail.transactions">
+                                <td>{{ transaction.date | date:'dd/MM/yyyy' }}</td>
+                                <td>{{ transaction.description }}</td>
+                                <td [class.positive]="transaction.type === 'income'" 
+                                    [class.negative]="transaction.type === 'expense'">
+                                    {{ formatAmount(transaction.type === 'income' ? transaction.amount : -transaction.amount) }}
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr class="total-row">
+                                <td colspan="2" class="total-label">Total</td>
+                                <td [class.positive]="calculateCategoryTotal() > 0" 
+                                    [class.negative]="calculateCategoryTotal() < 0" 
+                                    class="total-amount">
+                                    {{ formatAmount(calculateCategoryTotal()) }}
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    
+                    <!-- Resumen del total -->
+                    <div class="category-summary">
+                        <div class="summary-total">
+                            <span class="summary-label">Total en {{ getMonthName(filterForm.get('month')?.value) }}:</span>
+                            <span class="summary-amount" 
+                                  [class.positive]="calculateCategoryTotal() > 0" 
+                                  [class.negative]="calculateCategoryTotal() < 0">
+                                {{ formatAmount(calculateCategoryTotal()) }}
+                            </span>
+                        </div>
+                        <div class="summary-count">
+                            <mat-icon>receipt</mat-icon>
+                            <span>{{ categoryDetail.transactions.length }} transacciones</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,17 +1,20 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, OnDestroy, Inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { DateAdapter } from '@angular/material/core';
 import { Transaction } from '../../../../models/transaction';
 import { Category } from '../../../../models/category';
 import { CategoriesService } from '../../../../services/categories.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-transaction-dialog',
   templateUrl: './transaction-dialog.component.html',
   styleUrls: ['./transaction-dialog.component.css']
 })
-export class TransactionDialogComponent implements OnInit {
+export class TransactionDialogComponent implements OnInit, OnDestroy {
+  private destroy$ = new Subject<void>();
   transactionForm: FormGroup;
   categories: Category[] = [];
   filteredCategories: Category[] = [];
@@ -53,19 +56,23 @@ export class TransactionDialogComponent implements OnInit {
     this.dateAdapter.setLocale('es');
     
     // Suscribirse a los cambios del tipo de transacción
-    this.transactionForm.get('type')?.valueChanges.subscribe(type => {
-      this.filterCategories(type);
-      // Resetear la categoría seleccionada cuando cambie el tipo
-      this.transactionForm.patchValue({ categoryId: '' });
-    });
+    this.transactionForm.get('type')?.valueChanges
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(type => {
+        this.filterCategories(type);
+        // Resetear la categoría seleccionada cuando cambie el tipo
+        this.transactionForm.patchValue({ categoryId: '' });
+      });
   }
 
   loadCategories() {
-    this.categoriesService.getCategories().subscribe(categories => {
-      this.categories = categories;
-      // Filtrar categorías iniciales basadas en el tipo inicial (expense)
-      this.filterCategories(this.transactionForm.get('type')?.value);
-    });
+    this.categoriesService.getCategories()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe(categories => {
+        this.categories = categories;
+        // Filtrar categorías iniciales basadas en el tipo inicial (expense)
+        this.filterCategories(this.transactionForm.get('type')?.value);
+      });
   }
 
   filterCategories(type: 'income' | 'expense') {
@@ -102,5 +109,19 @@ export class TransactionDialogComponent implements OnInit {
     if (confirm('¿Está seguro de eliminar esta transacción?')) {
       this.dialogRef.close({ delete: true, transactionId: this.data?.transaction?.id });
     }
+  }
+
+  /**
+   * Obtiene la categoría seleccionada actualmente en el formulario
+   */
+  getSelectedCategory(): Category | undefined {
+    const selectedCategoryId = this.transactionForm.get('categoryId')?.value;
+    return this.categories.find(category => category.id === selectedCategoryId);
+  }
+  
+  ngOnDestroy() {
+    // Limpiar todas las suscripciones
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

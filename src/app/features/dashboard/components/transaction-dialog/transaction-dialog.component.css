@@ -226,3 +226,17 @@ mat-button-toggle {
 ::ng-deep .cdk-overlay-container {
     z-index: 9999 !important;
 }
+
+.category-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.category-option mat-icon {
+    vertical-align: middle;
+}
+
+.category-option span {
+    vertical-align: middle;
+}

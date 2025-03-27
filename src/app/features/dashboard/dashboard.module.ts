@@ -24,6 +24,10 @@ import { SharedModule } from '../../shared/shared.module';
 import { TransactionItemComponent } from './components/transactions-list/transaction-item/transaction-item.component';
 import { MatDividerModule } from '@angular/material/divider';
 import { TransactionDialogComponent } from './components/transaction-dialog/transaction-dialog.component';
+import { ReportDialogComponent } from './components/report-dialog/report-dialog.component';
+import { ChartsModule } from 'ng2-charts';
+import { MatTabsModule } from '@angular/material/tabs';
+import { CategoryDetailReportModule } from './components/reports/category-detail-report/category-detail-report.module';
 
 const MY_FORMATS = {
   parse: {
@@ -48,7 +52,8 @@ const routes: Routes = [
     TransactionsListComponent,
     CategoryDialogComponent,
     TransactionItemComponent,
-    TransactionDialogComponent
+    TransactionDialogComponent,
+    ReportDialogComponent
   ],
   imports: [
     CommonModule,
@@ -68,7 +73,10 @@ const routes: Routes = [
     MatProgressBarModule,
     MatExpansionModule,
     MatTooltipModule,
-    MatDividerModule
+    MatDividerModule,
+    ChartsModule,
+    MatTabsModule,
+    CategoryDetailReportModule
   ],
   providers: [
     { provide: MAT_DATE_LOCALE, useValue: 'es-ES' },
